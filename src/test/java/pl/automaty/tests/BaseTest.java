@@ -12,10 +12,11 @@ public class BaseTest {
     @BeforeMethod
     public void setup() {
         driver = DriverFactory.getDriver();
+        driver.get("https://www.automationexercise.com/");
     }
 
     @AfterMethod
     public void tearDown() {
-        driver.quit();
+        //driver.quit();
     }
 }

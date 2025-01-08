@@ -1,11 +1,14 @@
 package pl.automaty.tests;
 
 import org.testng.annotations.Test;
+import pl.automaty.pages.HomePage;
+import pl.automaty.pages.SignInAndLoginPage;
 
-public class RegisterTest {
+public class RegisterTest extends BaseTest {
     @Test
-    public void RegisterUser() {
-        System.out.println("Mock");
+    public void RegisterUserTest() {
+        new HomePage(driver).consentCookies()
+                            .openSignInAndLoginPage();
     }
 }
 
