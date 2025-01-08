@@ -7,8 +7,11 @@ import org.openqa.selenium.support.PageFactory;
 
 public class SignInAndLoginPage {
 
+    private WebDriver driver;
+
     public SignInAndLoginPage (WebDriver driver) {
         PageFactory.initElements(driver, this);
+        this.driver = driver;
         //this.driver = driver;
     }
 
