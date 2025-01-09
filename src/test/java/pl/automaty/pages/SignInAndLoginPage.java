@@ -12,14 +12,13 @@ public class SignInAndLoginPage {
     public SignInAndLoginPage (WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
-        //this.driver = driver;
     }
 
     @FindBy(xpath = "//input[@data-qa='login-email']")
-    WebElement LoginEmailButton;
+    WebElement LoginEmailInput;
 
     @FindBy(xpath = "//input[@data-qa='login-password']")
-    WebElement LoginPasswordButton;
+    WebElement LoginPasswordInput;
 
     @FindBy(xpath = "//button[@data-qa='login-button']")
     WebElement LoginButton;
@@ -28,10 +27,21 @@ public class SignInAndLoginPage {
     WebElement SignUpButton;
 
     @FindBy(xpath = "//input[@data-qa='signup-name']")
-    WebElement SignUpNameButton;
+    WebElement SignUpNameInput;
 
     @FindBy(xpath = "//input[@data-qa='signup-email']")
-    WebElement SignUpEmailButton;
+    WebElement SignUpEmailInput;
 
+    public void LoginToAccount(String email, String password) {
+        LoginEmailInput.sendKeys(email);
+        LoginPasswordInput.sendKeys(password);
+        LoginButton.click();
+    }
+
+    public void SignUpUser(String name, String email) {
+        SignUpNameInput.sendKeys(name);
+        SignUpEmailInput.sendKeys(email);
+        SignUpButton.click();
+    }
 
 }
