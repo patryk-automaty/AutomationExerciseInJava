@@ -20,9 +20,9 @@ public class HomePage {
         this.driver = driver;
     }
 
-    public SignInAndLoginPage openSignInAndLoginPage() {
+    public LoginPage openSignInAndLoginPage() {
         SignUpAndLoginLink.click();
-        return new SignInAndLoginPage(driver);
+        return new LoginPage(driver);
     }
 
     public HomePage consentCookies() {
