@@ -5,6 +5,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+import pl.automaty.model.SignUpData;
 
 public class SignUpPage {
 
@@ -113,22 +114,42 @@ public class SignUpPage {
         if (offer.equals(Boolean.TRUE)) {
             OffersCheckbox.click();
         }
-
     }
 
 
+    public void EnterAccountInformation(SignUpData signUpData) {
+        // Check if the gender is "Mr"
+        if (signUpData.getGender().equals("Mr")) {
+            // Click the "Mr" radio button
+            MrRadiobutton.click();
+        }
+        else {
+            // Otherwise, click the "Mrs" radio button
+            MrsRadiobutton.click();
+        }
 
+        // Input name and password fields
+        NameInput.sendKeys(signUpData.getName());
+        PasswordInput.sendKeys(signUpData.getPassword());
 
+        // Select date of birth from dropdown
+        Select selectDay = new Select(BirthDaySelect);
+        selectDay.selectByValue(signUpData.getBirthDay());
 
+        Select selectMonth = new Select(BirthMonthSelect);
+        selectMonth.selectByValue(signUpData.getBirthMonth());
 
+        Select selectYear = new Select(BirthYearSelect);
+        selectYear.selectByValue(signUpData.getBirthYear());
 
+        // Newsletter checkbox
+        if (signUpData.getNewsletter().equals(Boolean.TRUE)) {
+            NewsletterCheckbox.click();
+        }
 
-
-
-
-
-
-
-
-
+        // Get offer checkbox
+        if (signUpData.getNewsletter().equals(Boolean.TRUE)) {
+            OffersCheckbox.click();
+        }
+    }
 }
