@@ -31,9 +31,18 @@ public class SignUpData {
     private String address1;
     private String address2;
     private String country;
+    private String state;
     private String city;
     private String zipcode;
     private String mobileNumber;
+
+    public String getState() {
+        return state;
+    }
+
+    public void setState(String state) {
+        this.state = state;
+    }
 
     public String getFirstName() {
         return firstName;

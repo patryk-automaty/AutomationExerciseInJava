@@ -84,38 +84,6 @@ public class SignUpPage {
     @FindBy(xpath = "//button[text()='Create Account']")
     WebElement CreateAccountButton;
 
-    public void EnterAccountInformation(String gender, String name, String password, String day, String month,
-                                        String year,Boolean newsletter, Boolean offer ) {
-        // Check if the gender is "Mr"
-        if (gender.equals("Mr")) {
-            // Click the "Mr" radio button
-            MrRadiobutton.click();
-        }
-        else {
-            // Otherwise, click the "Mrs" radio button
-            MrsRadiobutton.click();
-        }
-        // Input name and password fields
-        NameInput.sendKeys(name);
-        PasswordInput.sendKeys(password);
-        // Select date of birth from dropdown
-        Select selectDay = new Select(BirthDaySelect);
-        selectDay.selectByValue(day);
-
-        Select selectMonth = new Select(BirthMonthSelect);
-        selectMonth.selectByValue(month);
-
-        Select selectYear = new Select(BirthYearSelect);
-        selectYear.selectByValue(year);
-
-        if (newsletter.equals(Boolean.TRUE)) {
-            NewsletterCheckbox.click();
-        }
-        if (offer.equals(Boolean.TRUE)) {
-            OffersCheckbox.click();
-        }
-    }
-
 
     public void EnterAccountInformation(SignUpData signUpData) {
         // Check if the gender is "Mr"
@@ -152,4 +120,22 @@ public class SignUpPage {
             OffersCheckbox.click();
         }
     }
+
+    public void EnterAddressInformation(SignUpData signUpData) {
+
+        FirstNameInput.sendKeys(signUpData.getFirstName());
+        LastNameInput.sendKeys(signUpData.getLastName());
+        CompanyInput.sendKeys(signUpData.getCompany());
+        Address1Input.sendKeys(signUpData.getAddress1());
+        Address2Input.sendKeys(signUpData.getAddress2());
+        Select selectCountry = new Select(CountrySelect);
+        selectCountry.selectByValue(signUpData.getCountry());
+        StateInput.sendKeys(signUpData.getState());
+        CityInput.sendKeys(signUpData.getCity());
+        ZipcodeInput.sendKeys(signUpData.getZipcode());
+        MobileNumberInput.sendKeys(signUpData.getMobileNumber());
+        CreateAccountButton.click();
+
+    }
+
 }

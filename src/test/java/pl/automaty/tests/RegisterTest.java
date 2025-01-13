@@ -10,7 +10,7 @@ public class RegisterTest extends BaseTest {
     @Test
     public void RegisterUserTest() {
 
-        // User data
+        // Account Information data
         SignUpData signUpData = new SignUpData();
         signUpData.setGender("Mr");
         signUpData.setName("Pat");
@@ -21,6 +21,17 @@ public class RegisterTest extends BaseTest {
         signUpData.setNewsletter(Boolean.TRUE);
         signUpData.setOffer(Boolean.TRUE);
 
+        // Address information data
+        signUpData.setFirstName("Pat");
+        signUpData.setLastName("Kat");
+        signUpData.setCompany("Januszex");
+        signUpData.setAddress1("Random Address");
+        signUpData.setAddress2("Continue random address 3/15");
+        signUpData.setCountry("Canada");
+        signUpData.setState("Mazovia");
+        signUpData.setCity("Warsaw");
+        signUpData.setZipcode("00-000 Warsaw");
+        signUpData.setMobileNumber("123123123");
 
         // Open home page and direct to login page
         HomePage homePage = new HomePage(driver);
@@ -29,11 +40,14 @@ public class RegisterTest extends BaseTest {
 
         // sign up new user
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "dsfsfds132w123@123333.com");
+        loginPage.SignUpUser("Pat", "d11sfsfds12322w123@123333.com");
 
         // fill account information
         SignUpPage signUpPage = new SignUpPage(driver);
         signUpPage.EnterAccountInformation(signUpData);
+
+        // fill address information
+        signUpPage.EnterAddressInformation(signUpData);
     }
 
 }
