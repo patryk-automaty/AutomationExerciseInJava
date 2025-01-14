@@ -49,7 +49,13 @@ public class SignUpPage {
     @FindBy(id = "optin")
     WebElement OffersCheckbox;
 
+    @FindBy(xpath = "//b[text()='Enter Account Information']")
+    WebElement EnterAccountInformationText;
+
     // Address information elements
+
+    @FindBy(xpath = "//b[text()='Address Information']")
+    WebElement AddressInformationText;
 
     @FindBy(id = "first_name")
     WebElement FirstNameInput;

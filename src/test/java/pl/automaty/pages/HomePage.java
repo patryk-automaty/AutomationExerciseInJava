@@ -13,6 +13,16 @@ public class HomePage {
     @FindBy(xpath = "//button/p[text()='Consent']")
     private WebElement CookiesConsentButton;
 
+    @FindBy(xpath = "//a[text()=' Logged in as ']")
+    private WebElement UserLoggedInfo;
+
+    @FindBy(xpath = "//a[contains(text(), 'Logout')]")
+    private WebElement LogoutButton;
+
+    @FindBy(xpath = "//a[contains(text(), 'Delete Account')]")
+    private WebElement DeleteAccountButton;
+
+
     private WebDriver driver;
 
     public HomePage (WebDriver driver) {
@@ -30,4 +40,11 @@ public class HomePage {
         return new HomePage(driver);
     }
 
+    public void logoutAccount() {
+        LogoutButton.click();
+    }
+
+    public void deleteAccount() {
+        DeleteAccountButton.click();
+    }
 }

@@ -32,6 +32,8 @@ public class LoginPage {
     @FindBy(xpath = "//input[@data-qa='signup-email']")
     WebElement SignUpEmailInput;
 
+
+
     public void LoginToAccount(String email, String password) {
         LoginEmailInput.sendKeys(email);
         LoginPasswordInput.sendKeys(password);

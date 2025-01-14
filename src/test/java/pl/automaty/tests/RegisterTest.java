@@ -1,5 +1,6 @@
 package pl.automaty.tests;
 
+import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.HomePage;
@@ -7,6 +8,8 @@ import pl.automaty.pages.LoginPage;
 import pl.automaty.pages.SignUpPage;
 
 public class RegisterTest extends BaseTest {
+
+    // Test Case 1
     @Test
     public void RegisterUserTest() {
 
