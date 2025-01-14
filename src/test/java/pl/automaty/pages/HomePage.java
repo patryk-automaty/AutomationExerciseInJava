@@ -47,4 +47,7 @@ public class HomePage {
     public void deleteAccount() {
         DeleteAccountButton.click();
     }
+    public String loggedUserText() {
+        return UserLoggedInfo.getText();
+    }
 }

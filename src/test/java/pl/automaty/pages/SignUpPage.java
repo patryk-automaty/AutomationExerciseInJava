@@ -144,4 +144,8 @@ public class SignUpPage {
 
     }
 
+    public String getEnterAccountInformationText() {
+        return EnterAccountInformationText.getText();
+    }
+
 }

@@ -3,9 +3,7 @@ package pl.automaty.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.SignUpData;
-import pl.automaty.pages.HomePage;
-import pl.automaty.pages.LoginPage;
-import pl.automaty.pages.SignUpPage;
+import pl.automaty.pages.*;
 
 public class RegisterTest extends BaseTest {
 
@@ -43,14 +41,29 @@ public class RegisterTest extends BaseTest {
 
         // sign up new user
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "d11sfsfds12322w123@123333.com");
+        loginPage.SignUpUser("Pat", "d11123@123333.com");
 
-        // fill account information
+        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
         SignUpPage signUpPage = new SignUpPage(driver);
+        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+        // Fill account information
         signUpPage.EnterAccountInformation(signUpData);
-
-        // fill address information
+        // Fill address information
         signUpPage.EnterAddressInformation(signUpData);
+
+        // Verify that 'ACCOUNT CREATED!' is visible
+        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+        // Click 'Continue' button
+        accountCreatedPage.clickContinue();
+
+        // Verify that 'Logged in as username' is visible
+        Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+        // Click 'Delete Account' button
+        homePage.deleteAccount();
+        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
     }
 
 }
