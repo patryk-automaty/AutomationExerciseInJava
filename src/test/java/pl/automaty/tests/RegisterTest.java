@@ -11,7 +11,7 @@ public class RegisterTest extends BaseTest {
     @Test
     public void RegisterUserTest() {
 
-        // Account Information data
+        // Account information data
         SignUpData signUpData = new SignUpData();
         signUpData.setGender("Mr");
         signUpData.setName("Pat");

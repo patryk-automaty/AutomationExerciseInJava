@@ -32,9 +32,14 @@ public class LoginPage {
     @FindBy(xpath = "//input[@data-qa='signup-email']")
     WebElement SignUpEmailInput;
 
+    @FindBy(xpath = "//p[text()='Your email or password is incorrect!']")
+    WebElement IncorrectLoginText;
+
+    @FindBy(xpath = "//h2[text()='Login to your account']")
+    WebElement LoginText;
 
 
-    public void LoginToAccount(String email, String password) {
+    public void loginToAccount(String email, String password) {
         LoginEmailInput.sendKeys(email);
         LoginPasswordInput.sendKeys(password);
         LoginButton.click();
@@ -46,4 +51,11 @@ public class LoginPage {
         SignUpButton.click();
     }
 
+    public String getIncorrectLoginText() {
+        return IncorrectLoginText.getText();
+    }
+
+    public String getLoginText() {
+        return LoginText.getText();
+    }
 }
