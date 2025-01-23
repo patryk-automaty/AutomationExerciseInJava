@@ -90,6 +90,8 @@ public class SignUpPage {
     @FindBy(xpath = "//button[text()='Create Account']")
     WebElement CreateAccountButton;
 
+    @FindBy(xpath = "//p[text()='Email Address already exist!']")
+    WebElement ExistEmailText;
 
     public void EnterAccountInformation(SignUpData signUpData) {
         // Check if the gender is "Mr"
@@ -146,6 +148,10 @@ public class SignUpPage {
 
     public String getEnterAccountInformationText() {
         return EnterAccountInformationText.getText();
+    }
+
+    public String getExistEmailText() {
+        return ExistEmailText.getText();
     }
 
 }

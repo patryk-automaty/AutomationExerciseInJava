@@ -41,7 +41,7 @@ public class RegisterTest extends BaseTest {
 
         // sign up new user
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "d11123@123333.com");
+        loginPage.SignUpUser("Pat", "existUser13123@tests.com");
 
         // Verify that 'ENTER ACCOUNT INFORMATION' is visible
         SignUpPage signUpPage = new SignUpPage(driver);
@@ -60,10 +60,27 @@ public class RegisterTest extends BaseTest {
         // Verify that 'Logged in as username' is visible
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
         // Click 'Delete Account' button
-        homePage.deleteAccount();
+        //homePage.deleteAccount();
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+        // DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+        // Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+    }
+
+
+    // Test Case 5
+    @Test
+    public void RegisterExistUserTest () {
+        // Open home page and direct to login page
+        HomePage homePage = new HomePage(driver);
+        homePage.consentCookies()
+                .openSignInAndLoginPage();
+        SignUpPage signUpPage = new SignUpPage(driver);
+
+        // sign up new user with existing email
+        LoginPage loginPage = new LoginPage(driver);
+        loginPage.SignUpUser("Pat", "existUser13123@tests.com");
+        Assert.assertEquals(signUpPage.getExistEmailText(), "Email Address already exist!");
+
     }
 
 }
