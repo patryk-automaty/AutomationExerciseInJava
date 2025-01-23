@@ -1,18 +1,6 @@
 package pl.automaty.model;
 
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.support.PageFactory;
-
-import java.awt.*;
-
 public class SignUpData {
-
-/*    private WebDriver driver;
-
-    public SignUpData (WebDriver driver) {
-        PageFactory.initElements(driver, this);
-        this.driver = driver;
-    }*/
 
     // Enter account information fields
     private String gender;

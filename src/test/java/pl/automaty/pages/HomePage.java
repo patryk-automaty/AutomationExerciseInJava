@@ -22,6 +22,9 @@ public class HomePage {
     @FindBy(xpath = "//a[contains(text(), 'Delete Account')]")
     private WebElement DeleteAccountButton;
 
+    @FindBy(xpath = "//a[contains(text(), 'Contact us')]")
+    private WebElement ContactUsButton;
+
 
     private WebDriver driver;
 
@@ -50,4 +53,10 @@ public class HomePage {
     public String loggedUserText() {
         return UserLoggedInfo.getText();
     }
+
+    public void contactUs() {
+        ContactUsButton.click();
+        new ContactUsPage(driver);
+    }
+
 }
