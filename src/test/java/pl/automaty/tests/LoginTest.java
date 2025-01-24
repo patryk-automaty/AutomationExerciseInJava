@@ -48,11 +48,10 @@ public class LoginTest extends BaseTest {
     public void LogoutUserTest() {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         homePage.consentCookies()
                 .openSignInAndLoginPage();
         Assert.assertEquals(loginPage.getLoginText(), "Login to your account");
-        loginPage.loginToAccount("testCorrectUser1993@testCorrectUser1993.com", "Test123!");
+        loginPage.loginToAccount("existUser1312311@tests.com", "Test123");
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
         homePage.logoutAccount();
 

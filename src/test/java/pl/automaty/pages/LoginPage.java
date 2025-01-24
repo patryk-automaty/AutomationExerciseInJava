@@ -39,16 +39,18 @@ public class LoginPage {
     WebElement LoginText;
 
 
-    public void loginToAccount(String email, String password) {
+    public HomePage loginToAccount(String email, String password) {
         LoginEmailInput.sendKeys(email);
         LoginPasswordInput.sendKeys(password);
         LoginButton.click();
+        return new HomePage(driver);
     }
 
-    public void SignUpUser(String name, String email) {
+    public SignUpPage SignUpUser(String name, String email) {
         SignUpNameInput.sendKeys(name);
         SignUpEmailInput.sendKeys(email);
         SignUpButton.click();
+        return new SignUpPage(driver);
     }
 
     public String getIncorrectLoginText() {

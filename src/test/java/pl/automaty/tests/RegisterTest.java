@@ -15,7 +15,7 @@ public class RegisterTest extends BaseTest {
         SignUpData signUpData = new SignUpData();
         signUpData.setGender("Mr");
         signUpData.setName("Pat");
-        signUpData.setPassword("Dupa123");
+        signUpData.setPassword("Test123");
         signUpData.setBirthDay("11");
         signUpData.setBirthMonth("3");
         signUpData.setBirthYear("2000");
@@ -41,7 +41,7 @@ public class RegisterTest extends BaseTest {
 
         // sign up new user
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "existUser13123@tests.com");
+        loginPage.SignUpUser("Pat", "exis1tUser1312311@tests.com");
 
         // Verify that 'ENTER ACCOUNT INFORMATION' is visible
         SignUpPage signUpPage = new SignUpPage(driver);
@@ -60,10 +60,10 @@ public class RegisterTest extends BaseTest {
         // Verify that 'Logged in as username' is visible
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
         // Click 'Delete Account' button
-        //homePage.deleteAccount();
+        homePage.deleteAccount();
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        // DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-        // Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
     }
 
 
@@ -75,7 +75,6 @@ public class RegisterTest extends BaseTest {
         homePage.consentCookies()
                 .openSignInAndLoginPage();
         SignUpPage signUpPage = new SignUpPage(driver);
-
         // sign up new user with existing email
         LoginPage loginPage = new LoginPage(driver);
         loginPage.SignUpUser("Pat", "existUser13123@tests.com");
