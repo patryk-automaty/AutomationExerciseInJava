@@ -20,18 +20,18 @@ public class ContactUsTest extends BaseTest {
                 .contactUs();
         // Verify 'GET IN TOUCH' is visible
         Assert.assertTrue(contactUsPage.getGetInTouchText().contains("GET IN TOUCH"));
-        contactUsData.setName("Pat");
-        contactUsData.setEmail("testemail123@test.com");
-        contactUsData.setSubject("Complaint Regarding Defective Laptop ");
-        contactUsData.setMessage("I am writing to formally submit a complaint regarding the [Laptop Model Name]," +
-                                " which I purchased on 2025/1/1 from Store." +
-                                " Unfortunately, I have encountered the following issue:\n" +
-                                "The screen has stopped working");
+        contactUsData.setName("Pat")
+                .setEmail("testemail123@test.com")
+                .setSubject("Complaint Regarding Defective Laptop ")
+                .setMessage("I am writing to formally submit a complaint regarding the [Laptop Model Name]," +
+                        " which I purchased on 2025/1/1 from Store." +
+                        " Unfortunately, I have encountered the following issue:\n" +
+                        "The screen has stopped working");
 
-        contactUsPage.setData(contactUsData);
-        contactUsPage.uploadFile(path);
-        contactUsPage.clickSubmit();
-        contactUsPage.acceptAlert();
+        contactUsPage.setData(contactUsData)
+                .uploadFile(path)
+                .clickSubmit()
+                .acceptAlert();
         Assert.assertEquals(contactUsPage.successMessageText(), "Success! Your details have been submitted successfully.");
         contactUsPage.clickHome();
     }

@@ -1,5 +1,6 @@
 package pl.automaty.pages;
 
+import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -46,35 +47,40 @@ public class ContactUsPage {
 
 
 
-    public void setData(ContactUsData contactUsData) {
+    public ContactUsPage setData(ContactUsData contactUsData) {
         NameInput.sendKeys(contactUsData.getName());
         EmailInput.sendKeys(contactUsData.getEmail());
         SubjectInput.sendKeys(contactUsData.getSubject());
         MessageInput.sendKeys(contactUsData.getMessage());
+        return new ContactUsPage(driver);
     }
     public String getGetInTouchText() {
         return GetInTouchText.getText();
     }
 
-    public void uploadFile(String path) {
+    public ContactUsPage uploadFile(String path) {
         UploadFile.sendKeys(path);
+        return this;
     }
 
-    public void clickSubmit() {
+    public ContactUsPage clickSubmit() {
         SubmitButton.click();
+        return this;
     }
 
-    public void acceptAlert() {
+    public ContactUsPage acceptAlert() {
         Alert alert = driver.switchTo().alert();
         alert.accept();
+        return this;
     }
 
     public String successMessageText() {
         return SuccessMessage.getText();
     }
 
-    public void clickHome() {
+    public HomePage clickHome() {
         HomeButton.click();
+        return new HomePage(driver);
     }
 
 }

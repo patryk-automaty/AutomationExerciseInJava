@@ -40,23 +40,25 @@ public class HomePage {
 
     public HomePage consentCookies() {
         CookiesConsentButton.click();
+        return this;
+    }
+
+    public HomePage logoutAccount() {
+        LogoutButton.click();
         return new HomePage(driver);
     }
 
-    public void logoutAccount() {
-        LogoutButton.click();
-    }
-
-    public void deleteAccount() {
+    public DeleteAccountPage deleteAccount() {
         DeleteAccountButton.click();
+        return new DeleteAccountPage(driver);
     }
     public String loggedUserText() {
         return UserLoggedInfo.getText();
     }
 
-    public void contactUs() {
+    public ContactUsPage contactUs() {
         ContactUsButton.click();
-        new ContactUsPage(driver);
+        return new ContactUsPage(driver);
     }
 
 }
