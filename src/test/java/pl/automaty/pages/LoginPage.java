@@ -15,49 +15,49 @@ public class LoginPage {
     }
 
     @FindBy(xpath = "//input[@data-qa='login-email']")
-    WebElement LoginEmailInput;
+    WebElement loginEmailInput;
 
     @FindBy(xpath = "//input[@data-qa='login-password']")
-    WebElement LoginPasswordInput;
+    WebElement loginPasswordInput;
 
     @FindBy(xpath = "//button[@data-qa='login-button']")
-    WebElement LoginButton;
+    WebElement loginButton;
 
     @FindBy(xpath = "//button[@data-qa='signup-button']")
-    WebElement SignUpButton;
+    WebElement signUpButton;
 
     @FindBy(xpath = "//input[@data-qa='signup-name']")
-    WebElement SignUpNameInput;
+    WebElement signUpNameInput;
 
     @FindBy(xpath = "//input[@data-qa='signup-email']")
-    WebElement SignUpEmailInput;
+    WebElement signUpEmailInput;
 
     @FindBy(xpath = "//p[text()='Your email or password is incorrect!']")
-    WebElement IncorrectLoginText;
+    WebElement incorrectLoginText;
 
     @FindBy(xpath = "//h2[text()='Login to your account']")
-    WebElement LoginText;
+    WebElement loginText;
 
 
     public HomePage loginToAccount(String email, String password) {
-        LoginEmailInput.sendKeys(email);
-        LoginPasswordInput.sendKeys(password);
-        LoginButton.click();
+        loginEmailInput.sendKeys(email);
+        loginPasswordInput.sendKeys(password);
+        loginButton.click();
         return new HomePage(driver);
     }
 
     public SignUpPage SignUpUser(String name, String email) {
-        SignUpNameInput.sendKeys(name);
-        SignUpEmailInput.sendKeys(email);
-        SignUpButton.click();
+        signUpNameInput.sendKeys(name);
+        signUpEmailInput.sendKeys(email);
+        signUpButton.click();
         return new SignUpPage(driver);
     }
 
     public String getIncorrectLoginText() {
-        return IncorrectLoginText.getText();
+        return incorrectLoginText.getText();
     }
 
     public String getLoginText() {
-        return LoginText.getText();
+        return loginText.getText();
     }
 }

@@ -25,8 +25,11 @@ public class HomePage {
     @FindBy(xpath = "//a[contains(text(), 'Contact us')]")
     private WebElement ContactUsButton;
 
-    @FindBy(xpath = "//a[contains(text(), ' Test Cases')]")
+    @FindBy(xpath = "//a[contains(text(), 'Test Cases')]")
     private WebElement TestCaseButton;
+
+    @FindBy(xpath = "//a[contains(text(), 'Products')]")
+    private WebElement productButton;
 
 
     private WebDriver driver;
@@ -67,6 +70,11 @@ public class HomePage {
     public TestCasePage testCase() {
         TestCaseButton.click();
         return new TestCasePage(driver);
+    }
+
+    public ProductsPage productNavBar() {
+        productButton.click();
+        return new ProductsPage(driver);
     }
 
 }

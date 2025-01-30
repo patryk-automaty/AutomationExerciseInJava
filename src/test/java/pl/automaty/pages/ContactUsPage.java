@@ -18,53 +18,53 @@ public class ContactUsPage {
     }
 
     @FindBy(xpath = "//h2[text()='Get In Touch']")
-    WebElement GetInTouchText;
+    WebElement getInTouchText;
 
     @FindBy(name = "name")
-    WebElement NameInput;
+    WebElement nameInput;
 
     @FindBy(name = "email")
-    WebElement EmailInput;
+    WebElement emailInput;
 
     @FindBy(name = "subject")
-    WebElement SubjectInput;
+    WebElement subjectInput;
 
     @FindBy(id = "message")
-    WebElement MessageInput;
+    WebElement messageInput;
 
     @FindBy(name = "upload_file")
-    WebElement UploadFile;
+    WebElement uploadFile;
 
     @FindBy(name = "submit")
-    WebElement SubmitButton;
+    WebElement submitButton;
 
     @FindBy(xpath = "//div[@class='status alert alert-success']")
-    WebElement SuccessMessage;
+    WebElement successMessage;
 
     @FindBy(xpath ="//span[contains(text(), 'Home')]")
-    WebElement HomeButton;
+    WebElement homeButton;
 
 
 
 
     public ContactUsPage setData(ContactUsData contactUsData) {
-        NameInput.sendKeys(contactUsData.getName());
-        EmailInput.sendKeys(contactUsData.getEmail());
-        SubjectInput.sendKeys(contactUsData.getSubject());
-        MessageInput.sendKeys(contactUsData.getMessage());
+        nameInput.sendKeys(contactUsData.getName());
+        emailInput.sendKeys(contactUsData.getEmail());
+        subjectInput.sendKeys(contactUsData.getSubject());
+        messageInput.sendKeys(contactUsData.getMessage());
         return new ContactUsPage(driver);
     }
     public String getGetInTouchText() {
-        return GetInTouchText.getText();
+        return getInTouchText.getText();
     }
 
     public ContactUsPage uploadFile(String path) {
-        UploadFile.sendKeys(path);
+        uploadFile.sendKeys(path);
         return this;
     }
 
     public ContactUsPage clickSubmit() {
-        SubmitButton.click();
+        submitButton.click();
         return this;
     }
 
@@ -75,11 +75,11 @@ public class ContactUsPage {
     }
 
     public String successMessageText() {
-        return SuccessMessage.getText();
+        return successMessage.getText();
     }
 
     public HomePage clickHome() {
-        HomeButton.click();
+        homeButton.click();
         return new HomePage(driver);
     }
 
