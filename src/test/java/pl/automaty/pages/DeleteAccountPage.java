@@ -15,17 +15,17 @@ public class DeleteAccountPage {
     }
 
     @FindBy(xpath = "//b[text()='Account Deleted!']")
-    WebElement AccountDeletedText;
+    WebElement accountDeletedText;
 
     @FindBy(xpath = "//a[@data-qa='continue-button']")
-    WebElement ContinueButton;
+    WebElement continueButton;
 
     public String getAccountDeletedText() {
-        return AccountDeletedText.getText();
+        return accountDeletedText.getText();
     }
 
     public void clickContinue() {
-        ContinueButton.click();
+        continueButton.click();
     }
 
 }

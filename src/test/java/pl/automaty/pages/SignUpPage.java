@@ -19,38 +19,38 @@ public class SignUpPage {
     // Account information elements
 
     @FindBy(id = "id_gender1")
-    WebElement MrRadiobutton;
+    WebElement mrRadiobutton;
 
     @FindBy(id = "id_gender2")
-    WebElement MrsRadiobutton;
+    WebElement mrsRadiobutton;
 
     @FindBy(id = "name")
-    WebElement NameInput;
+    WebElement nameInput;
 
     @FindBy(id = "email")
-    WebElement EmailInput;
+    WebElement emailInput;
 
     @FindBy(id = "password")
-    WebElement PasswordInput;
+    WebElement passwordInput;
 
     @FindBy(id = "days")
-    WebElement BirthDaySelect;
+    WebElement birthDaySelect;
 
 
     @FindBy(id = "months")
-    WebElement BirthMonthSelect;
+    WebElement birthMonthSelect;
 
     @FindBy(id = "years")
-    WebElement BirthYearSelect;
+    WebElement birthYearSelect;
 
     @FindBy(id = "newsletter")
-    WebElement NewsletterCheckbox;
+    WebElement newsletterCheckbox;
 
     @FindBy(id = "optin")
-    WebElement OffersCheckbox;
+    WebElement offersCheckbox;
 
     @FindBy(xpath = "//b[text()='Enter Account Information']")
-    WebElement EnterAccountInformationText;
+    WebElement enterAccountInformationText;
 
     // Address information elements
 
@@ -58,100 +58,100 @@ public class SignUpPage {
     WebElement AddressInformationText;
 
     @FindBy(id = "first_name")
-    WebElement FirstNameInput;
+    WebElement firstNameInput;
 
     @FindBy(id = "last_name")
-    WebElement LastNameInput;
+    WebElement lastNameInput;
 
     @FindBy(id = "company")
-    WebElement CompanyInput;
+    WebElement companyInput;
 
     @FindBy(id = "address1")
-    WebElement Address1Input;
+    WebElement address1Input;
 
     @FindBy(id = "address2")
-    WebElement Address2Input;
+    WebElement address2Input;
 
     @FindBy(id = "country")
-    WebElement CountrySelect;
+    WebElement countrySelect;
 
     @FindBy(id = "state")
-    WebElement StateInput;
+    WebElement stateInput;
 
     @FindBy(id = "city")
-    WebElement CityInput;
+    WebElement cityInput;
 
     @FindBy(id = "zipcode")
-    WebElement ZipcodeInput;
+    WebElement zipcodeInput;
 
     @FindBy(id = "mobile_number")
-    WebElement MobileNumberInput;
+    WebElement mobileNumberInput;
 
     @FindBy(xpath = "//button[text()='Create Account']")
-    WebElement CreateAccountButton;
+    WebElement createAccountButton;
 
     @FindBy(xpath = "//p[text()='Email Address already exist!']")
-    WebElement ExistEmailText;
+    WebElement existEmailText;
 
     public void EnterAccountInformation(SignUpData signUpData) {
         // Check if the gender is "Mr"
         if (signUpData.getGender().equals("Mr")) {
             // Click the "Mr" radio button
-            MrRadiobutton.click();
+            mrRadiobutton.click();
         }
         else {
             // Otherwise, click the "Mrs" radio button
-            MrsRadiobutton.click();
+            mrsRadiobutton.click();
         }
 
         // Input name and password fields
-        NameInput.sendKeys(signUpData.getName());
-        PasswordInput.sendKeys(signUpData.getPassword());
+        nameInput.sendKeys(signUpData.getName());
+        passwordInput.sendKeys(signUpData.getPassword());
 
         // Select date of birth from dropdown
-        Select selectDay = new Select(BirthDaySelect);
+        Select selectDay = new Select(birthDaySelect);
         selectDay.selectByValue(signUpData.getBirthDay());
 
-        Select selectMonth = new Select(BirthMonthSelect);
+        Select selectMonth = new Select(birthMonthSelect);
         selectMonth.selectByValue(signUpData.getBirthMonth());
 
-        Select selectYear = new Select(BirthYearSelect);
+        Select selectYear = new Select(birthYearSelect);
         selectYear.selectByValue(signUpData.getBirthYear());
 
         // Newsletter checkbox
         if (signUpData.getNewsletter().equals(Boolean.TRUE)) {
-            NewsletterCheckbox.click();
+            newsletterCheckbox.click();
         }
 
         // Get offer checkbox
         if (signUpData.getNewsletter().equals(Boolean.TRUE)) {
-            OffersCheckbox.click();
+            offersCheckbox.click();
         }
     }
 
     public void EnterAddressInformation(SignUpData signUpData) {
 
-        FirstNameInput.sendKeys(signUpData.getFirstName());
-        LastNameInput.sendKeys(signUpData.getLastName());
-        CompanyInput.sendKeys(signUpData.getCompany());
-        Address1Input.sendKeys(signUpData.getAddress1());
-        Address2Input.sendKeys(signUpData.getAddress2());
-        Select selectCountry = new Select(CountrySelect);
+        firstNameInput.sendKeys(signUpData.getFirstName());
+        lastNameInput.sendKeys(signUpData.getLastName());
+        companyInput.sendKeys(signUpData.getCompany());
+        address1Input.sendKeys(signUpData.getAddress1());
+        address2Input.sendKeys(signUpData.getAddress2());
+        Select selectCountry = new Select(countrySelect);
         selectCountry.selectByValue(signUpData.getCountry());
-        StateInput.sendKeys(signUpData.getState());
-        CityInput.sendKeys(signUpData.getCity());
-        ZipcodeInput.sendKeys(signUpData.getZipcode());
-        MobileNumberInput.sendKeys(signUpData.getMobileNumber());
-        CreateAccountButton.click();
+        stateInput.sendKeys(signUpData.getState());
+        cityInput.sendKeys(signUpData.getCity());
+        zipcodeInput.sendKeys(signUpData.getZipcode());
+        mobileNumberInput.sendKeys(signUpData.getMobileNumber());
+        createAccountButton.click();
 
     }
 
     public String getEnterAccountInformationText() {
-        return EnterAccountInformationText.getText();
+        return enterAccountInformationText.getText();
     }
 
     public String getExistEmailText() {
-        return ExistEmailText.getText();
+        return existEmailText.getText();
     }
 
 }
