@@ -27,8 +27,32 @@ public class ProductsPage {
     @FindBy(xpath = "//a[text()='View Product']")
     List<WebElement> viewProductTabs;
 
-    // Method to get the list of product elements
+    @FindBy(xpath = "//div[@class='product-information']/h2")
+    WebElement productName;
 
+    @FindBy(xpath = "//div[@class='product-information']/p[contains(text(),'Category')]")
+    WebElement productCategory;
+
+    @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Availability')]")
+    WebElement productAvailability;
+
+    @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Condition')]")
+    WebElement productCondition;
+
+    @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Brand')]")
+    WebElement productBrand;
+
+    @FindBy(xpath = "//div[@class='product-information']//span[contains(text(),'Rs')]")
+    WebElement productPrice;
+
+
+
+    // Method to check if product list is visible
+    public boolean isProductListVisible() {
+        return !productList.isEmpty();
+    }
+
+    // Method to get the list of product elements
     public List<String> getProductList() {
         return productList.stream()
                 .map(WebElement::getText)
@@ -43,9 +67,22 @@ public class ProductsPage {
         return productHeader.getText();
     }
 
-    public Boolean productListChecker() {
+    public Boolean checkProductList() {
         return productHeader.isDisplayed();
     }
+
+    public Boolean checkProductCategory() { return productCategory.isDisplayed(); }
+
+    public Boolean checkProductAvailability() { return productAvailability.isDisplayed(); }
+
+    public Boolean checkProductCondition() { return productCondition.isDisplayed(); }
+
+    public Boolean checkProductBrand() { return productBrand.isDisplayed(); }
+
+    public Boolean checkProductName() { return productName.isDisplayed(); }
+
+    public Boolean checkProductPrice() { return productPrice.isDisplayed(); }
+
 
 
 
