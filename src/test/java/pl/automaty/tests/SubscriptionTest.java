@@ -33,6 +33,4 @@ public class SubscriptionTest extends BaseTest {
         // Verify success message 'You have been successfully subscribed!' is visible
         Assert.assertEquals(homePage.successSubMessageText(), "You have been successfully subscribed!'");
     }
-
-
 }
