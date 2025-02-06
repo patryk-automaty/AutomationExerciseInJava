@@ -21,7 +21,7 @@ public class ProductsPage {
     @FindBy(xpath = "//h2[text()='All Products']")
     WebElement productHeader;
 
-    @FindBy(xpath = "//div[@class = 'single-products']//p")
+    @FindBy(xpath = "//div[@class = 'productinfo text-center']//p")
     List<WebElement> productList;
 
     @FindBy(xpath = "//a[text()='View Product']")
@@ -45,7 +45,14 @@ public class ProductsPage {
     @FindBy(xpath = "//div[@class='product-information']//span[contains(text(),'Rs')]")
     WebElement productPrice;
 
+    @FindBy(id = "search_product")
+    WebElement searchProductInput;
 
+    @FindBy(id = "submit_search")
+    WebElement searchProductButton;
+
+    @FindBy(xpath = "//h2[contains(text(),'Searched Products')]")
+    WebElement searchedProductHeader;
 
     // Method to check if product list is visible
     public boolean isProductListVisible() {
@@ -83,7 +90,12 @@ public class ProductsPage {
 
     public Boolean checkProductPrice() { return productPrice.isDisplayed(); }
 
+    public Boolean checkSearchedProductsHeader() { return searchedProductHeader.isDisplayed(); }
 
+    public void searchProduct(String productName) {
+        searchProductInput.sendKeys(productName);
+        searchProductButton.click();
+    }
 
 
 
