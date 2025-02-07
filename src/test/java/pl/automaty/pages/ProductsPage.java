@@ -1,6 +1,5 @@
 package pl.automaty.pages;
 
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -19,40 +18,49 @@ public class ProductsPage {
     }
 
     @FindBy(xpath = "//h2[text()='All Products']")
-    WebElement productHeader;
+    private WebElement productHeader;
 
     @FindBy(xpath = "//div[@class = 'productinfo text-center']//p")
-    List<WebElement> productList;
+    private List<WebElement> productList;
+
+    @FindBy(xpath = "//div[@class = 'productinfo text-center']//a[@data-product-id]")
+    private List<WebElement> addToCartList;
 
     @FindBy(xpath = "//a[text()='View Product']")
-    List<WebElement> viewProductTabs;
+    private List<WebElement> viewProductTabs;
 
     @FindBy(xpath = "//div[@class='product-information']/h2")
-    WebElement productName;
+    private WebElement productName;
 
     @FindBy(xpath = "//div[@class='product-information']/p[contains(text(),'Category')]")
-    WebElement productCategory;
+    private WebElement productCategory;
 
     @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Availability')]")
-    WebElement productAvailability;
+    private WebElement productAvailability;
 
     @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Condition')]")
-    WebElement productCondition;
+    private WebElement productCondition;
 
     @FindBy(xpath = "//div[@class='product-information']//b[contains(text(),'Brand')]")
-    WebElement productBrand;
+    private WebElement productBrand;
 
     @FindBy(xpath = "//div[@class='product-information']//span[contains(text(),'Rs')]")
-    WebElement productPrice;
+    private WebElement productPrice;
 
     @FindBy(id = "search_product")
-    WebElement searchProductInput;
+    private WebElement searchProductInput;
 
     @FindBy(id = "submit_search")
-    WebElement searchProductButton;
+    private WebElement searchProductButton;
 
     @FindBy(xpath = "//h2[contains(text(),'Searched Products')]")
-    WebElement searchedProductHeader;
+    private WebElement searchedProductHeader;
+
+    @FindBy(xpath = "//u[text()='View Cart']")
+    private WebElement viewCardLink;
+
+    @FindBy(xpath = "//button[text()='Continue Shopping']")
+    private WebElement continueShoppingButton;
 
     // Method to check if product list is visible
     public boolean isProductListVisible() {
@@ -66,8 +74,13 @@ public class ProductsPage {
                 .collect(Collectors.toList());
     }
 
-    public void clickFirstItem() {
-        viewProductTabs.get(0).click();
+    public ProductsPage clickAddToCart(int prodNumber) {
+        addToCartList.get(prodNumber).click();
+        return this;
+    }
+
+    public void clickItem(int item) {
+        viewProductTabs.get(item).click();
     }
 
     public String getProductHeaderText() {
@@ -97,7 +110,13 @@ public class ProductsPage {
         searchProductButton.click();
     }
 
+    public CartPage viewCart() {
+        viewCardLink.click();
+        return new CartPage(driver);
+    }
 
-
-
+    public ProductsPage continueShopping() {
+        continueShoppingButton.click();
+        return this;
+    }
 }

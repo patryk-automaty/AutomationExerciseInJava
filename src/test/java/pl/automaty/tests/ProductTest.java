@@ -21,7 +21,7 @@ public class ProductTest extends BaseTest {
         Assert.assertTrue(productsPage.checkProductList());
         // Verify that products list is visible
         Assert.assertTrue(productsPage.isProductListVisible());
-        productsPage.clickFirstItem();
+        productsPage.clickItem(0);
         // Verify that details is visible: product name, category, price, availability, condition, brand
         Assert.assertTrue(productsPage.checkProductName());
         Assert.assertTrue(productsPage.checkProductCategory());
@@ -32,7 +32,7 @@ public class ProductTest extends BaseTest {
 
     }
 
-    // Test Case 9 (to correct)
+    // Test Case 9
     @Test
     public void SearchProductTest() {
         String searchProductName = "dress";
@@ -72,5 +72,7 @@ public class ProductTest extends BaseTest {
         // Final assertion - If assertion find error, assertion will fail
         softAssert.assertAll();
         }
+
+
     }
 
