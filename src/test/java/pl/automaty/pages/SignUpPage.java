@@ -19,79 +19,79 @@ public class SignUpPage {
     // Account information elements
 
     @FindBy(id = "id_gender1")
-    WebElement mrRadiobutton;
+    private WebElement mrRadiobutton;
 
     @FindBy(id = "id_gender2")
-    WebElement mrsRadiobutton;
+    private WebElement mrsRadiobutton;
 
     @FindBy(id = "name")
-    WebElement nameInput;
+    private WebElement nameInput;
 
     @FindBy(id = "email")
-    WebElement emailInput;
+    private WebElement emailInput;
 
     @FindBy(id = "password")
-    WebElement passwordInput;
+    private WebElement passwordInput;
 
     @FindBy(id = "days")
-    WebElement birthDaySelect;
+    private WebElement birthDaySelect;
 
 
     @FindBy(id = "months")
-    WebElement birthMonthSelect;
+    private WebElement birthMonthSelect;
 
     @FindBy(id = "years")
-    WebElement birthYearSelect;
+    private WebElement birthYearSelect;
 
     @FindBy(id = "newsletter")
-    WebElement newsletterCheckbox;
+    private WebElement newsletterCheckbox;
 
     @FindBy(id = "optin")
-    WebElement offersCheckbox;
+    private WebElement offersCheckbox;
 
     @FindBy(xpath = "//b[text()='Enter Account Information']")
-    WebElement enterAccountInformationText;
+    private WebElement enterAccountInformationText;
 
     // Address information elements
 
     @FindBy(xpath = "//b[text()='Address Information']")
-    WebElement AddressInformationText;
+    private WebElement AddressInformationText;
 
     @FindBy(id = "first_name")
-    WebElement firstNameInput;
+    private WebElement firstNameInput;
 
     @FindBy(id = "last_name")
-    WebElement lastNameInput;
+    private WebElement lastNameInput;
 
     @FindBy(id = "company")
-    WebElement companyInput;
+    private WebElement companyInput;
 
     @FindBy(id = "address1")
-    WebElement address1Input;
+    private WebElement address1Input;
 
     @FindBy(id = "address2")
-    WebElement address2Input;
+    private WebElement address2Input;
 
     @FindBy(id = "country")
-    WebElement countrySelect;
+    private WebElement countrySelect;
 
     @FindBy(id = "state")
-    WebElement stateInput;
+    private WebElement stateInput;
 
     @FindBy(id = "city")
-    WebElement cityInput;
+    private WebElement cityInput;
 
     @FindBy(id = "zipcode")
-    WebElement zipcodeInput;
+    private WebElement zipcodeInput;
 
     @FindBy(id = "mobile_number")
-    WebElement mobileNumberInput;
+    private WebElement mobileNumberInput;
 
     @FindBy(xpath = "//button[text()='Create Account']")
-    WebElement createAccountButton;
+    private WebElement createAccountButton;
 
     @FindBy(xpath = "//p[text()='Email Address already exist!']")
-    WebElement existEmailText;
+    private WebElement existEmailText;
 
     public void EnterAccountInformation(SignUpData signUpData) {
         // Check if the gender is "Mr"

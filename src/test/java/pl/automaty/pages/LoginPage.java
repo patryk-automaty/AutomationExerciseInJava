@@ -15,28 +15,28 @@ public class LoginPage {
     }
 
     @FindBy(xpath = "//input[@data-qa='login-email']")
-    WebElement loginEmailInput;
+    private WebElement loginEmailInput;
 
     @FindBy(xpath = "//input[@data-qa='login-password']")
-    WebElement loginPasswordInput;
+    private WebElement loginPasswordInput;
 
     @FindBy(xpath = "//button[@data-qa='login-button']")
-    WebElement loginButton;
+    private WebElement loginButton;
 
     @FindBy(xpath = "//button[@data-qa='signup-button']")
-    WebElement signUpButton;
+    private WebElement signUpButton;
 
     @FindBy(xpath = "//input[@data-qa='signup-name']")
-    WebElement signUpNameInput;
+    private WebElement signUpNameInput;
 
     @FindBy(xpath = "//input[@data-qa='signup-email']")
-    WebElement signUpEmailInput;
+    private WebElement signUpEmailInput;
 
     @FindBy(xpath = "//p[text()='Your email or password is incorrect!']")
-    WebElement incorrectLoginText;
+    private WebElement incorrectLoginText;
 
     @FindBy(xpath = "//h2[text()='Login to your account']")
-    WebElement loginText;
+    private WebElement loginText;
 
 
     public HomePage loginToAccount(String email, String password) {
