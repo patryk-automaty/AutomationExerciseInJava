@@ -15,10 +15,10 @@ public class AccountCreatedPage {
     }
 
     @FindBy(xpath = "//b[text()='Account Created!']")
-    WebElement accountCreatedText;
+    private WebElement accountCreatedText;
 
     @FindBy(xpath = "//a[@data-qa='continue-button']")
-    WebElement continueButton;
+    private WebElement continueButton;
 
     public String getAccountCreatedText() {
         return accountCreatedText.getText();

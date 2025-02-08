@@ -15,7 +15,7 @@ public class TestCasePage {
     }
 
     @FindBy(xpath = "//b[text()='Test Cases']")
-    WebElement testCaseHeader;
+    private WebElement testCaseHeader;
 
     public String getTestCaseHeader() {
         return testCaseHeader.getText();

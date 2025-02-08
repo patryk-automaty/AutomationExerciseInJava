@@ -1,6 +1,5 @@
 package pl.automaty.pages;
 
-import org.checkerframework.checker.units.qual.C;
 import org.openqa.selenium.Alert;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -18,31 +17,31 @@ public class ContactUsPage {
     }
 
     @FindBy(xpath = "//h2[text()='Get In Touch']")
-    WebElement getInTouchText;
+    private WebElement getInTouchText;
 
     @FindBy(name = "name")
-    WebElement nameInput;
+    private WebElement nameInput;
 
     @FindBy(name = "email")
-    WebElement emailInput;
+    private WebElement emailInput;
 
     @FindBy(name = "subject")
-    WebElement subjectInput;
+    private WebElement subjectInput;
 
     @FindBy(id = "message")
-    WebElement messageInput;
+    private WebElement messageInput;
 
     @FindBy(name = "upload_file")
-    WebElement uploadFile;
+    private WebElement uploadFile;
 
     @FindBy(name = "submit")
-    WebElement submitButton;
+    private WebElement submitButton;
 
     @FindBy(xpath = "//div[@class='status alert alert-success']")
-    WebElement successMessage;
+    private WebElement successMessage;
 
     @FindBy(xpath ="//span[contains(text(), 'Home')]")
-    WebElement homeButton;
+    private WebElement homeButton;
 
 
 
