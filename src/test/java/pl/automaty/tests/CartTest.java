@@ -3,6 +3,7 @@ package pl.automaty.tests;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import org.testng.asserts.SoftAssert;
 import pl.automaty.pages.CartPage;
 import pl.automaty.pages.HomePage;
 import pl.automaty.pages.ProductsPage;
@@ -31,6 +32,7 @@ public class CartTest extends BaseTest {
         List<WebElement> productsQuantity = cartPage.getProductsQuantity();
         List<WebElement> productsPrice = cartPage.getProductsPrice();
         List<WebElement> productsTotalPrice = cartPage.getProductsTotalPrice();
+        SoftAssert softAssert = new SoftAssert();
         // Iterate over the lists to check the visibility of each product details
         for (int i = 0; i < productsName.size(); i++) {
             WebElement name = productsName.get(i);
@@ -38,12 +40,12 @@ public class CartTest extends BaseTest {
             WebElement quantity = productsQuantity.get(i);
             WebElement price = productsPrice.get(i);
             WebElement totalPrice = productsTotalPrice.get(i);
-            Assert.assertTrue(name.isDisplayed(), "Product element is not visible: " + name.getText());
-            Assert.assertTrue(category.isDisplayed(), "Product element is not visible: " + category.getText());
-            Assert.assertTrue(quantity.isDisplayed(), "Product element is not visible: " + quantity.getText());
-            Assert.assertTrue(price.isDisplayed(), "Product element is not visible: " + price.getText());
-            Assert.assertTrue(totalPrice.isDisplayed(), "Product element is not visible: " + totalPrice.getText());
-            System.out.println(i + 1 + " product");
+            softAssert.assertTrue(name.isDisplayed(), "Product element is not visible: " + name.getText());
+            softAssert.assertTrue(category.isDisplayed(), "Product element is not visible: " + category.getText());
+            softAssert.assertTrue(quantity.isDisplayed(), "Product element is not visible: " + quantity.getText());
+            softAssert.assertTrue(price.isDisplayed(), "Product element is not visible: " + price.getText());
+            softAssert.assertTrue(totalPrice.isDisplayed(), "Product element is not visible: " + totalPrice.getText());
+            System.out.println("product " + i + 1);
             System.out.println("Product Name: " + name.getText());
             System.out.println("Product Category: " + category.getText());
             System.out.println("Product quantity: " + quantity.getText());
@@ -51,7 +53,8 @@ public class CartTest extends BaseTest {
             System.out.println("Product total price: " + totalPrice.getText());
 
         }
-
+        // Soft assertion - test execution will continue even if this assertion fails
+        softAssert.assertAll();
     }
 
 }
