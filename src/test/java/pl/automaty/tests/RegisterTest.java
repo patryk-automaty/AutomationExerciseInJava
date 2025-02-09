@@ -46,21 +46,26 @@ public class RegisterTest extends BaseTest {
         // Verify that 'ENTER ACCOUNT INFORMATION' is visible
         SignUpPage signUpPage = new SignUpPage(driver);
         Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+
         // Fill account information
         signUpPage.EnterAccountInformation(signUpData);
+
         // Fill address information
         signUpPage.EnterAddressInformation(signUpData);
 
         // Verify that 'ACCOUNT CREATED!' is visible
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
         Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+
         // Click 'Continue' button
         accountCreatedPage.clickContinue();
 
         // Verify that 'Logged in as username' is visible
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+
         // Click 'Delete Account' button
         homePage.deleteAccount();
+
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
@@ -70,13 +75,17 @@ public class RegisterTest extends BaseTest {
     // Test Case 5
     @Test
     public void RegisterExistUserTest () {
-        // Open home page and direct to login page
+
+        // Create instances
         HomePage homePage = new HomePage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+
+        // Open home page and navigate to login page
         homePage.consentCookies()
                 .openSignInAndLoginPage();
-        SignUpPage signUpPage = new SignUpPage(driver);
-        // sign up new user with existing email
-        LoginPage loginPage = new LoginPage(driver);
+
+        // Sign up new user with existing email
         loginPage.SignUpUser("Pat", "existUser13123@tests.com");
         Assert.assertEquals(signUpPage.getExistEmailText(), "Email Address already exist!");
 
