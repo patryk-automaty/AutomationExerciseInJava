@@ -6,6 +6,7 @@ import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 public class HomePage {
 
@@ -47,6 +48,15 @@ public class HomePage {
 
     @FindBy(xpath = "//a[contains(text(), 'Cart')]")
     private WebElement cartButton;
+
+    @FindBy(xpath = "//div[@class='productinfo text-center']//p")
+    private List<WebElement> productList;
+
+    @FindBy(xpath = "//div[@class='productinfo text-center']//a[@data-product-id]")
+    private List<WebElement> addProductToCartList;
+
+    @FindBy(xpath = "//div[@class='choose']")
+    private List<WebElement> viewProductList;
 
 
     private WebDriver driver;
@@ -113,5 +123,16 @@ public class HomePage {
         return new CartPage(driver);
     }
 
+    public List<WebElement> getProductList() {
+        return productList;
+    }
+
+    public List<WebElement> addProductToCart() {
+        return addProductToCartList;
+    }
+
+    public List<WebElement> viewProductList() {
+        return viewProductList;
+    }
 
 }

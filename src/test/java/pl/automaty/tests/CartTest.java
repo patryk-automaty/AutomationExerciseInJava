@@ -1,5 +1,6 @@
 package pl.automaty.tests;
 
+import com.sun.source.tree.AssertTree;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -9,9 +10,11 @@ import pl.automaty.pages.HomePage;
 import pl.automaty.pages.ProductsPage;
 
 import java.util.List;
+import java.util.Random;
 
 public class CartTest extends BaseTest {
 
+    // Test Case 12
     @Test
     public void viewCardTest() {
         HomePage homePage = new HomePage(driver);
@@ -55,6 +58,31 @@ public class CartTest extends BaseTest {
         }
         // Soft assertion - test execution will continue even if this assertion fails
         softAssert.assertAll();
+    }
+    // Test Case 13
+    @Test
+    public void verifyQuantityTest() {
+        HomePage homePage = new HomePage(driver);
+        CartPage cartPage = new CartPage(driver);
+        ProductsPage productsPage = new ProductsPage(driver);
+        // Accept cookies
+        homePage.consentCookies();
+        List<WebElement> productsList = homePage.getProductList();
+        // Choose random product
+        int sizeProductList = productsList.size();
+        Random randomNumber = new Random();
+        int randomProduct = randomNumber.nextInt(sizeProductList);
+        homePage.viewProductList().get(randomProduct).click();
+        // Increase quantity to 4
+        int quantity = 4;
+        productsPage.clearQuantityNumber()
+                    .inputQuantityNumber(quantity)
+                    .addToCard()
+                    .viewCart();
+        // Verify that product is displayed in cart page with exact quantity
+        String quantityOnCartPageString = cartPage.getProductsQuantity().get(0).getText();
+        int quantityOnCartPageInt = Integer.parseInt(quantityOnCartPageString);
+        Assert.assertEquals(quantityOnCartPageInt, quantity);
     }
 
 }
