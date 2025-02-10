@@ -39,6 +39,15 @@ public class CartPage {
     @FindBy(xpath = "//tr[contains(@id, 'product')]")
     private List<WebElement> numberOfProducts;
 
+    @FindBy(xpath = "//a[text()='Proceed To Checkout']")
+    private WebElement proceedToCheckoutButton;
+
+    @FindBy(xpath = "//button[text()='Continue On Cart']")
+    private WebElement continueOnCartButton;
+
+    @FindBy(xpath = "//u[text()='Register / Login']")
+    private WebElement registerOrLoginLink;
+
     public List<WebElement> getProductsName() {
         return productsName;
     }
@@ -65,6 +74,21 @@ public class CartPage {
 
     public int getNumberOfProducts() {
         return numberOfProducts.size();
+    }
+
+    public CartPage proceedToCheckout() {
+        proceedToCheckoutButton.click();
+        return this;
+    }
+
+    public CartPage continueOnCart() {
+        continueOnCartButton.click();
+        return this;
+    }
+
+    public LoginPage registerOrLogin() {
+        registerOrLoginLink.click();
+        return new LoginPage(driver);
     }
 
 

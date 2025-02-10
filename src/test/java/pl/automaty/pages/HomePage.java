@@ -58,12 +58,19 @@ public class HomePage {
     @FindBy(xpath = "//div[@class='choose']")
     private List<WebElement> viewProductList;
 
+    @FindBy(xpath = "//button[text()='Continue Shopping']")
+    private WebElement continueOnCartButton;
 
     private WebDriver driver;
 
     public HomePage (WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
+    }
+
+    public HomePage continueShopping() {
+        continueOnCartButton.click();
+        return this;
     }
 
     public LoginPage openSignInAndLoginPage() {
@@ -127,12 +134,15 @@ public class HomePage {
         return productList;
     }
 
-    public List<WebElement> addProductToCart() {
-        return addProductToCartList;
+    public HomePage addProductToCart(int index) {
+        addProductToCartList.get(index).click();
+        return this;
     }
 
     public List<WebElement> viewProductList() {
         return viewProductList;
     }
+
+
 
 }
