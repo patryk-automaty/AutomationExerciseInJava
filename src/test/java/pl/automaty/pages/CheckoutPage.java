@@ -17,7 +17,23 @@ public class CheckoutPage {
     @FindBy(xpath = "//ul[@id='address_delivery']")
     WebElement deliveryAddressObject;
 
+    @FindBy(xpath = "//a[text()='Place Order']")
+    WebElement placeOrderButton;
+
+    @FindBy(name = "message")
+    WebElement orderMessageInput;
+
     public WebElement getDeliveryAddress() {
         return deliveryAddressObject;
+    }
+
+    public CheckoutPage clickPlaceOrder() {
+        placeOrderButton.click();
+        return this;
+    }
+
+    public CheckoutPage addOrderMessage(String message) {
+        orderMessageInput.sendKeys(message);
+        return this;
     }
 }

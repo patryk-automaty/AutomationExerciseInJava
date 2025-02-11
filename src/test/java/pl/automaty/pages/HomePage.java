@@ -61,11 +61,27 @@ public class HomePage {
     @FindBy(xpath = "//button[text()='Continue Shopping']")
     private WebElement continueOnCartButton;
 
+    @FindBy(xpath = "//h2[text()='Category']")
+    private WebElement categoryHeaderText;
+
+    @FindBy(xpath = "//a[contains(.,'Women')]")
+    private WebElement womenCategory;
+
+    @FindBy(xpath = "//a[contains(.,'Man')]")
+    private WebElement menCategory;
+
+    @FindBy(xpath = "//a[contains(.,'Kids')]")
+    private WebElement kidsCategory;
+
     private WebDriver driver;
 
     public HomePage (WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
+    }
+
+    public WebElement getCategoryHeader() {
+        return categoryHeaderText;
     }
 
     public HomePage continueShopping() {

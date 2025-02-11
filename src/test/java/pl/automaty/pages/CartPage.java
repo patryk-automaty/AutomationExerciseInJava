@@ -33,8 +33,8 @@ public class CartPage {
     @FindBy(xpath = "//td[@class='cart_total']//p")
     private List<WebElement> productsTotalPrice;
 
-    @FindBy(xpath = "//a[@class='cart_quantity_delete']")
-    private WebElement deleteProductButton;
+    @FindBy(className = "cart_quantity_delete")
+    private List<WebElement> deleteProductButton;
 
     @FindBy(xpath = "//tr[contains(@id, 'product')]")
     private List<WebElement> numberOfProducts;
@@ -47,6 +47,7 @@ public class CartPage {
 
     @FindBy(xpath = "//u[text()='Register / Login']")
     private WebElement registerOrLoginLink;
+
 
     public List<WebElement> getProductsName() {
         return productsName;
@@ -68,8 +69,8 @@ public class CartPage {
         return productsTotalPrice;
     }
 
-    public void deleteProduct() {
-        deleteProductButton.click();
+    public void deleteProduct(int index) {
+        deleteProductButton.get(index).click();
     }
 
     public int getNumberOfProducts() {

@@ -4,6 +4,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pl.automaty.model.PaymentData;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.*;
 
@@ -99,88 +100,31 @@ public class CartTest extends BaseTest {
         Assert.assertEquals(quantityOnCartPageInt, quantity);
     }
 
-    // TC 14
     @Test
-    public void registerWhileCheckoutTest() {
+    public void removeProductsFromCartTest() {
         // Create instances
         HomePage homePage = new HomePage(driver);
         CartPage cartPage = new CartPage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        CheckoutPage checkoutPage = new CheckoutPage(driver);
 
-        // Add products to cart and navigate to cart page
+        // Add products to cart, navigate to cart page and click proceedToCheckout page
         homePage.consentCookies()
                 .addProductToCart(0)
                 .continueShopping()
                 .addProductToCart(1)
+                .continueShopping()
                 .viewCart();
+        // Get the number of products before deletion
+        int productCountBefore = cartPage.getNumberOfProducts();
 
-        // Click 'Proceed To Checkout' button
-        cartPage.proceedToCheckout()
-                .registerOrLogin();
+        // Delete the first product from the cart
+        cartPage.deleteProduct(0);
 
-        loginPage.SignUpUser("janusz", "janus11z123@mail123123.com");
+        // Get the number of products after deletion
+        int productCountAfter = cartPage.getNumberOfProducts();
 
+        // Assert that the product count has decreased by one
+        Assert.assertEquals(productCountAfter, productCountBefore - 1);
 
-        // Account information data
-        SignUpData signUpData = new SignUpData();
-        signUpData.setGender("Mr");
-        signUpData.setName("Pat");
-        signUpData.setPassword("Test123");
-        signUpData.setBirthDay("11");
-        signUpData.setBirthMonth("3");
-        signUpData.setBirthYear("2000");
-        signUpData.setNewsletter(Boolean.TRUE);
-        signUpData.setOffer(Boolean.TRUE);
-
-        // Address information data
-        signUpData.setFirstName("Pat");
-        signUpData.setLastName("Kat");
-        signUpData.setCompany("Januszex");
-        signUpData.setAddress1("Random Address");
-        signUpData.setAddress2("Continue random address 3/15");
-        signUpData.setCountry("Canada");
-        signUpData.setState("Mazovia");
-        signUpData.setCity("Warsaw");
-        signUpData.setZipcode("00-000 Warsaw");
-        signUpData.setMobileNumber("123123123");
-
-        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
-        SignUpPage signUpPage = new SignUpPage(driver);
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
-
-        // Fill account information
-        signUpPage.EnterAccountInformation(signUpData);
-
-        // Fill address information
-        signUpPage.EnterAddressInformation(signUpData);
-
-        // Verify that 'ACCOUNT CREATED!' is visible
-        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
-
-        // Click 'Continue' button
-        accountCreatedPage.clickContinue();
-
-        // Verify that 'Logged in as username' is visible
-        Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
-
-        // Navigate to cart page
-        homePage.viewCart();
-
-        // Click 'Proceed To Checkout' button
-        cartPage.proceedToCheckout();
-
-        // Check that the delivery address is visible
-        Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
-
-
-        // Click 'Delete Account' button
-        homePage.deleteAccount();
-
-        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
     }
 
 }

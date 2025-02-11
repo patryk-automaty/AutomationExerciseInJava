@@ -3,7 +3,10 @@ package pl.automaty.tests;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
+import pl.automaty.model.PaymentData;
+import pl.automaty.pages.CheckoutPage;
 import pl.automaty.pages.HomePage;
+import pl.automaty.pages.PaymentPage;
 import pl.automaty.pages.ProductsPage;
 
 import java.util.List;
@@ -81,6 +84,22 @@ public class ProductTest extends BaseTest {
 
         // Final assertion - If assertion find error, assertion will fail
         softAssert.assertAll();
+        }
+
+        @Test
+        public void viewCategoryProductsTest() {
+            //Create instances
+            HomePage homePage = new HomePage(driver);
+
+
+            // Accept cookies and navigate to login page
+            homePage.consentCookies();
+
+            // Verify that the category section is visible
+            Assert.assertTrue(homePage.getCategoryHeader().isDisplayed());
+
+
+
         }
 
 
