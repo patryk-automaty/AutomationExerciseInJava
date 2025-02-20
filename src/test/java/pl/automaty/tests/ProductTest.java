@@ -1,5 +1,6 @@
 package pl.automaty.tests;
 
+import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
@@ -9,6 +10,7 @@ import pl.automaty.pages.HomePage;
 import pl.automaty.pages.PaymentPage;
 import pl.automaty.pages.ProductsPage;
 
+import java.time.Duration;
 import java.util.List;
 
 public class ProductTest extends BaseTest {
@@ -86,21 +88,29 @@ public class ProductTest extends BaseTest {
         softAssert.assertAll();
         }
 
-        @Test
-        public void viewCategoryProductsTest() {
-            //Create instances
-            HomePage homePage = new HomePage(driver);
+    @Test
+    public void viewCategoryProductsTest() {
+        //Create instances
+        HomePage homePage = new HomePage(driver);
 
 
-            // Accept cookies and navigate to login page
-            homePage.consentCookies();
+        // Accept cookies and navigate to login page
+        homePage.consentCookies();
 
-            // Verify that the category section is visible
-            Assert.assertTrue(homePage.getCategoryHeader().isDisplayed());
+        // Verify that the category section is visible
+        Assert.assertEquals(homePage.getSideCategoryHeader(), "Category".toUpperCase());
 
+        // Click on 'Women' category and choose Dress
+        homePage.chooseWomenCategory();
+        homePage.clickOnWomenCategory("Dress");
+        // Verify that the category section is visible
+        Assert.assertEquals(homePage.getCategoryHeader(), "Women - Dress Products".toUpperCase());
 
+        //  On left sidebar, click on any sub-category link of 'Men' category
+        homePage.chooseMenCategory();
+        homePage.clickOnMenCategory("Tshirts");
+    }
 
-        }
 
 
     }

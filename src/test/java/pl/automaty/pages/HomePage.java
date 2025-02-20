@@ -7,6 +7,7 @@ import org.openqa.selenium.support.PageFactory;
 
 import java.security.cert.X509Certificate;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class HomePage {
 
@@ -61,17 +62,33 @@ public class HomePage {
     @FindBy(xpath = "//button[text()='Continue Shopping']")
     private WebElement continueOnCartButton;
 
-    @FindBy(xpath = "//h2[text()='Category']")
+
+    @FindBy(xpath = "//div[@class='features_items']/h2")
     private WebElement categoryHeaderText;
+
+    @FindBy(xpath = "//div[@class='left-sidebar']/h2")
+    private WebElement sideCategoryHeaderText;
 
     @FindBy(xpath = "//a[contains(.,'Women')]")
     private WebElement womenCategory;
 
-    @FindBy(xpath = "//a[contains(.,'Man')]")
+    @FindBy(xpath = "//a[contains(.,'Men')]")
     private WebElement menCategory;
 
     @FindBy(xpath = "//a[contains(.,'Kids')]")
     private WebElement kidsCategory;
+
+    @FindBy(xpath = "//div[@id='Women']//a")
+    private List<WebElement> womenCategories;
+
+    @FindBy(id = "//div[@id='Men']//a")
+    private List<WebElement> menCategories;
+
+    @FindBy(id = "//div[@id='Kids']//a")
+    private List<WebElement> kidsCategories;
+
+
+
 
     private WebDriver driver;
 
@@ -80,9 +97,63 @@ public class HomePage {
         this.driver = driver;
     }
 
-    public WebElement getCategoryHeader() {
-        return categoryHeaderText;
+    public String getCategoryHeader() {
+        return categoryHeaderText.getText();
     }
+
+    public String getSideCategoryHeader() {
+        return sideCategoryHeaderText.getText();
+    }
+
+    public HomePage chooseWomenCategory() {
+        womenCategory.click();
+        return this;
+    }
+
+    public HomePage chooseMenCategory() {
+        menCategory.click();
+        return this;
+    }
+
+    public HomePage chooseKidCategory() {
+        kidsCategory.click();
+        return this;
+    }
+
+    public void clickOnWomenCategory(String categoryName) {
+        for (WebElement category : womenCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+    public void clickOnMenCategory(String categoryName) {
+        for (WebElement category : menCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+    public void clickOnKidCategory(String categoryName) {
+        for (WebElement category : kidsCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+
+
+
+
 
     public HomePage continueShopping() {
         continueOnCartButton.click();

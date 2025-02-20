@@ -74,7 +74,7 @@ public class CartPage {
     }
 
     public int getNumberOfProducts() {
-        return numberOfProducts.size();
+        return deleteProductButton.size();
     }
 
     public CartPage proceedToCheckout() {

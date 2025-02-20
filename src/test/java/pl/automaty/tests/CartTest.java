@@ -8,8 +8,10 @@ import pl.automaty.model.PaymentData;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.*;
 
+import java.time.Duration;
 import java.util.List;
 import java.util.Random;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 public class CartTest extends BaseTest {
 
@@ -105,6 +107,7 @@ public class CartTest extends BaseTest {
         // Create instances
         HomePage homePage = new HomePage(driver);
         CartPage cartPage = new CartPage(driver);
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
         // Add products to cart, navigate to cart page and click proceedToCheckout page
         homePage.consentCookies()
@@ -118,7 +121,7 @@ public class CartTest extends BaseTest {
 
         // Delete the first product from the cart
         cartPage.deleteProduct(0);
-
+        wait.until(driver -> cartPage.getNumberOfProducts() == productCountBefore - 1);
         // Get the number of products after deletion
         int productCountAfter = cartPage.getNumberOfProducts();
 
