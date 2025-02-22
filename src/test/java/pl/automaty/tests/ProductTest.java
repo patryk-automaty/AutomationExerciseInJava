@@ -111,13 +111,5 @@ public class ProductTest extends BaseTest {
         homePage.chooseMenCategory();
         homePage.clickOnMenCategory("Jeans");
     }
-
-    @Test
-    public void viewAndCartBrandProductsTest() {
-        HomePage homePage = new HomePage(driver);
-    }
-
-
-
 }
 
