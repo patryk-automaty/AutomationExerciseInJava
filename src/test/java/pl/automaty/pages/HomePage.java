@@ -4,8 +4,11 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.security.cert.X509Certificate;
+import java.time.Duration;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -121,8 +124,14 @@ public class HomePage {
     }
 
     public void clickOnWomenCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(womenCategories));
+
         for (WebElement category : womenCategories) {
             if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
                 category.click();
                 return;  // Exit loop after clicking
             }
@@ -131,8 +140,14 @@ public class HomePage {
     }
 
     public void clickOnMenCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(menCategories));
+
         for (WebElement category : menCategories) {
             if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
                 category.click();
                 return;  // Exit loop after clicking
             }
@@ -140,9 +155,15 @@ public class HomePage {
         throw new NoSuchElementException("Category not found: " + categoryName);
     }
 
-    public void clickOnKidCategory(String categoryName) {
+    public void clickOnKidsCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(kidsCategories));
+
         for (WebElement category : kidsCategories) {
             if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
                 category.click();
                 return;  // Exit loop after clicking
             }

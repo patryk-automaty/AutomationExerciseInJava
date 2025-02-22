@@ -88,6 +88,7 @@ public class ProductTest extends BaseTest {
         softAssert.assertAll();
         }
 
+    // TC 18
     @Test
     public void viewCategoryProductsTest() {
         //Create instances
@@ -108,10 +109,15 @@ public class ProductTest extends BaseTest {
 
         //  On left sidebar, click on any sub-category link of 'Men' category
         homePage.chooseMenCategory();
-        homePage.clickOnMenCategory("Tshirts");
+        homePage.clickOnMenCategory("Jeans");
+    }
+
+    @Test
+    public void viewAndCartBrandProductsTest() {
+        HomePage homePage = new HomePage(driver);
     }
 
 
 
-    }
+}
 
