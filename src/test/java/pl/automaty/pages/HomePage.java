@@ -4,8 +4,13 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.security.cert.X509Certificate;
+import java.time.Duration;
+import java.util.List;
+import java.util.NoSuchElementException;
 
 public class HomePage {
 
@@ -48,12 +53,132 @@ public class HomePage {
     @FindBy(xpath = "//a[contains(text(), 'Cart')]")
     private WebElement cartButton;
 
+    @FindBy(xpath = "//div[@class='productinfo text-center']//p")
+    private List<WebElement> productList;
+
+    @FindBy(xpath = "//div[@class='productinfo text-center']//a[@data-product-id]")
+    private List<WebElement> addProductToCartList;
+
+    @FindBy(xpath = "//div[@class='choose']")
+    private List<WebElement> viewProductList;
+
+    @FindBy(xpath = "//button[text()='Continue Shopping']")
+    private WebElement continueOnCartButton;
+
+
+    @FindBy(xpath = "//div[@class='features_items']/h2")
+    private WebElement categoryHeaderText;
+
+    @FindBy(xpath = "//div[@class='left-sidebar']/h2")
+    private WebElement sideCategoryHeaderText;
+
+    @FindBy(xpath = "//a[contains(.,'Women')]")
+    private WebElement womenCategory;
+
+    @FindBy(xpath = "//a[contains(.,'Men')]")
+    private WebElement menCategory;
+
+    @FindBy(xpath = "//a[contains(.,'Kids')]")
+    private WebElement kidsCategory;
+
+    @FindBy(xpath = "//div[@id='Women']//a")
+    private List<WebElement> womenCategories;
+
+    @FindBy(id = "//div[@id='Men']//a")
+    private List<WebElement> menCategories;
+
+    @FindBy(id = "//div[@id='Kids']//a")
+    private List<WebElement> kidsCategories;
+
+
+
 
     private WebDriver driver;
 
     public HomePage (WebDriver driver) {
         PageFactory.initElements(driver, this);
         this.driver = driver;
+    }
+
+    public String getCategoryHeader() {
+        return categoryHeaderText.getText();
+    }
+
+    public String getSideCategoryHeader() {
+        return sideCategoryHeaderText.getText();
+    }
+
+    public HomePage chooseWomenCategory() {
+        womenCategory.click();
+        return this;
+    }
+
+    public HomePage chooseMenCategory() {
+        menCategory.click();
+        return this;
+    }
+
+    public HomePage chooseKidCategory() {
+        kidsCategory.click();
+        return this;
+    }
+
+    public void clickOnWomenCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(womenCategories));
+
+        for (WebElement category : womenCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+    public void clickOnMenCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(menCategories));
+
+        for (WebElement category : menCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+    public void clickOnKidsCategory(String categoryName) {
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+
+        // Wait for at least one category to be visible
+        wait.until(ExpectedConditions.visibilityOfAllElements(kidsCategories));
+
+        for (WebElement category : kidsCategories) {
+            if (category.getText().equalsIgnoreCase(categoryName)) {
+                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
+                category.click();
+                return;  // Exit loop after clicking
+            }
+        }
+        throw new NoSuchElementException("Category not found: " + categoryName);
+    }
+
+
+
+
+
+
+    public HomePage continueShopping() {
+        continueOnCartButton.click();
+        return this;
     }
 
     public LoginPage openSignInAndLoginPage() {
@@ -112,6 +237,20 @@ public class HomePage {
         cartButton.click();
         return new CartPage(driver);
     }
+
+    public List<WebElement> getProductList() {
+        return productList;
+    }
+
+    public HomePage addProductToCart(int index) {
+        addProductToCartList.get(index).click();
+        return this;
+    }
+
+    public List<WebElement> viewProductList() {
+        return viewProductList;
+    }
+
 
 
 }

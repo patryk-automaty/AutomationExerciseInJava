@@ -11,6 +11,7 @@ public class BaseTest {
 
     protected WebDriver driver;
 
+    // Initialize the driver
     @BeforeMethod
     public void setup() {
         driver = DriverFactory.getDriver();

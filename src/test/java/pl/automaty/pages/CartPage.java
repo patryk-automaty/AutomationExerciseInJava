@@ -33,11 +33,21 @@ public class CartPage {
     @FindBy(xpath = "//td[@class='cart_total']//p")
     private List<WebElement> productsTotalPrice;
 
-    @FindBy(xpath = "//a[@class='cart_quantity_delete']")
-    private WebElement deleteProductButton;
+    @FindBy(className = "cart_quantity_delete")
+    private List<WebElement> deleteProductButton;
 
     @FindBy(xpath = "//tr[contains(@id, 'product')]")
     private List<WebElement> numberOfProducts;
+
+    @FindBy(xpath = "//a[text()='Proceed To Checkout']")
+    private WebElement proceedToCheckoutButton;
+
+    @FindBy(xpath = "//button[text()='Continue On Cart']")
+    private WebElement continueOnCartButton;
+
+    @FindBy(xpath = "//u[text()='Register / Login']")
+    private WebElement registerOrLoginLink;
+
 
     public List<WebElement> getProductsName() {
         return productsName;
@@ -59,12 +69,27 @@ public class CartPage {
         return productsTotalPrice;
     }
 
-    public void deleteProduct() {
-        deleteProductButton.click();
+    public void deleteProduct(int index) {
+        deleteProductButton.get(index).click();
     }
 
     public int getNumberOfProducts() {
-        return numberOfProducts.size();
+        return deleteProductButton.size();
+    }
+
+    public CartPage proceedToCheckout() {
+        proceedToCheckoutButton.click();
+        return this;
+    }
+
+    public CartPage continueOnCart() {
+        continueOnCartButton.click();
+        return this;
+    }
+
+    public LoginPage registerOrLogin() {
+        registerOrLoginLink.click();
+        return new LoginPage(driver);
     }
 
 

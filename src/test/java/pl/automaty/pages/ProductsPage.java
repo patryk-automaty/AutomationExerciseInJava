@@ -62,13 +62,19 @@ public class ProductsPage {
     @FindBy(xpath = "//button[text()='Continue Shopping']")
     private WebElement continueShoppingButton;
 
+    @FindBy(id = "quantity")
+    private WebElement quantityInput;
+
+    @FindBy(xpath = "//button[contains(., 'Add')]")
+    private WebElement addToCardButton;
+
     // Method to check if product list is visible
     public boolean isProductListVisible() {
         return !productList.isEmpty();
     }
 
     // Method to get the list of product elements
-    public List<String> getProductList() {
+    public List<String> getProductListString() {
         return productList.stream()
                 .map(WebElement::getText)
                 .collect(Collectors.toList());
@@ -79,31 +85,38 @@ public class ProductsPage {
         return this;
     }
 
-    public void clickItem(int item) {
+    public CartPage clickItem(int item) {
         viewProductTabs.get(item).click();
+        return new CartPage(driver);
     }
 
-    public String getProductHeaderText() {
-        return productHeader.getText();
+    public WebElement getProductHeader() {
+        return productHeader;
     }
 
-    public Boolean checkProductList() {
-        return productHeader.isDisplayed();
+    public List<WebElement> getProductList() {
+        return productList;
     }
 
-    public Boolean checkProductCategory() { return productCategory.isDisplayed(); }
+    public List<String> getProductListTexts() {
+        return productList.stream()
+                        .map(WebElement::getText)
+                        .collect(Collectors.toList());
+    }
 
-    public Boolean checkProductAvailability() { return productAvailability.isDisplayed(); }
+    public WebElement getProductCategory() { return productCategory;}
 
-    public Boolean checkProductCondition() { return productCondition.isDisplayed(); }
+    public WebElement getProductAvailability() { return productAvailability; }
 
-    public Boolean checkProductBrand() { return productBrand.isDisplayed(); }
+    public WebElement getProductCondition() { return productCondition; }
 
-    public Boolean checkProductName() { return productName.isDisplayed(); }
+    public WebElement getProductBrand() { return productBrand; }
 
-    public Boolean checkProductPrice() { return productPrice.isDisplayed(); }
+    public WebElement getProductName() { return productName; }
 
-    public Boolean checkSearchedProductsHeader() { return searchedProductHeader.isDisplayed(); }
+    public WebElement getProductPrice() { return productPrice; }
+
+    public WebElement getSearchedProductsHeader() { return searchedProductHeader; }
 
     public void searchProduct(String productName) {
         searchProductInput.sendKeys(productName);
@@ -117,6 +130,22 @@ public class ProductsPage {
 
     public ProductsPage continueShopping() {
         continueShoppingButton.click();
+        return this;
+    }
+
+    public ProductsPage inputQuantityNumber(int quantityNumber) {
+        String quantityNumberStr = Integer.toString(quantityNumber);
+        quantityInput.sendKeys(quantityNumberStr);
+        return this;
+    }
+
+    public ProductsPage clearQuantityNumber() {
+        quantityInput.clear();
+        return this;
+    }
+
+    public ProductsPage addToCard() {
+        addToCardButton.click();
         return this;
     }
 }
