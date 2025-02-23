@@ -1,5 +1,7 @@
 package pl.automaty.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.ContactUsData;
@@ -16,11 +18,11 @@ public class ContactUsTest extends BaseTest {
         ContactUsPage contactUsPage = new ContactUsPage(driver);
         ContactUsData contactUsData = new ContactUsData();
         String path = "/home/patryk/IdeaProjects/AutomationExerciseInJava/src/test/java/pl/automaty/model/sample.txt";
-
+        ExtentTest test = extentReports.createTest("Contact Us Form");
         // Open 'contact us' form page
         homePage.consentCookies()
                 .contactUs();
-
+        test.log(Status.PASS, "Open 'contact us' form page");
         // Verify 'GET IN TOUCH' is visible
         Assert.assertTrue(contactUsPage.getGetInTouchText().contains("GET IN TOUCH"));
         contactUsData.setName("Pat")
@@ -36,11 +38,12 @@ public class ContactUsTest extends BaseTest {
                     .uploadFile(path)
                     .clickSubmit()
                     .acceptAlert();
-
+        test.log(Status.PASS, "Submit the contact form");
         // Verify that the success message after form submission is as expected
         Assert.assertEquals(contactUsPage.successMessageText(), "Success! Your details have been submitted successfully.");
 
         // Navigate back to the Home page.
         contactUsPage.clickHome();
+        test.log(Status.PASS, "Navigate back to the Home page.");
     }
 }

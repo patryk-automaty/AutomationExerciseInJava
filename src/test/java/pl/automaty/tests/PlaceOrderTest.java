@@ -1,5 +1,7 @@
 package pl.automaty.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.PaymentData;
@@ -20,6 +22,8 @@ public class PlaceOrderTest extends BaseTest {
         PaymentData paymentData = new PaymentData();
         SignUpPage signUpPage = new SignUpPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+        ExtentTest test = extentReports.createTest("Place Order: Register while Checkout");
+        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
 
         // Add products to cart and navigate to cart page
         homePage.consentCookies()
@@ -27,13 +31,15 @@ public class PlaceOrderTest extends BaseTest {
                 .continueShopping()
                 .addProductToCart(1)
                 .viewCart();
-
+        test.log(Status.PASS, "Add products to cart and navigate to cart page");
         // Click 'Proceed To Checkout' button
         cartPage.proceedToCheckout()
                 .registerOrLogin();
+        test.log(Status.PASS, "Click 'Proceed To Checkout' button");
 
         // Sign up new user
         loginPage.SignUpUser("janusz", "ja2nus111z123@mail123123.com");
+        test.log(Status.PASS, "Sign up new user");
 
         // Account information data
         SignUpData signUpData = new SignUpData();
@@ -63,30 +69,36 @@ public class PlaceOrderTest extends BaseTest {
 
         // Fill account information
         signUpPage.EnterAccountInformation(signUpData);
+        test.log(Status.PASS, "Fill account information");
 
         // Fill address information
         signUpPage.EnterAddressInformation(signUpData);
+        test.log(Status.PASS, "Fill address information");
 
         // Verify that 'ACCOUNT CREATED!' is visible
         Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
 
         // Click 'Continue' button
         accountCreatedPage.clickContinue();
+        test.log(Status.PASS, "Click 'Continue' button");
 
         // Verify that 'Logged in as username' is visible
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
 
         // Navigate to cart page
         homePage.viewCart();
+        test.log(Status.PASS, "Navigate to cart page");
 
         // Click 'Proceed To Checkout' button
         cartPage.proceedToCheckout();
+        test.log(Status.PASS, "Click 'Proceed To Checkout' button");
 
         // Check that the delivery address is visible
         Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
 
         //Click Place Order button
         checkoutPage.clickPlaceOrder();
+        test.log(Status.PASS, "Click Place Order button");
 
         // Fill Payment data and confirm order
         paymentData.setNameOnCard("Pat Kat")
@@ -95,15 +107,16 @@ public class PlaceOrderTest extends BaseTest {
                     .setExpirationMonth("05")
                     .setExpirationYear("2028");
         paymentPage.enterPaymentInformation(paymentData);
+        test.log(Status.PASS, "Fill Payment data and confirm order");
 
         // Verify success message
         Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
 
         // Click 'Delete Account' button
         homePage.deleteAccount();
+        test.log(Status.PASS, "Click 'Delete Account' button");
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
     }
 
@@ -119,11 +132,13 @@ public class PlaceOrderTest extends BaseTest {
         PaymentData paymentData = new PaymentData();
         SignUpPage signUpPage = new SignUpPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+        ExtentTest test = extentReports.createTest("Place Order: Register before Checkout");
+        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
 
         // Accept cookies and navigate to login page
         homePage.consentCookies()
                 .openSignInAndLoginPage();
-
+        test.log(Status.PASS, "Accept cookies and navigate to login page");
         // Sign up new user
         loginPage.SignUpUser("janusz", "ja112nusmai@l123123.com");
 
@@ -155,15 +170,18 @@ public class PlaceOrderTest extends BaseTest {
 
         // Fill account information
         signUpPage.EnterAccountInformation(signUpData);
+        test.log(Status.PASS, "Fill account information");
 
         // Fill address information
         signUpPage.EnterAddressInformation(signUpData);
+        test.log(Status.PASS, "Fill address information");
 
         // Verify that 'ACCOUNT CREATED!' is visible
         Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
 
         // Click 'Continue' button
         accountCreatedPage.clickContinue();
+        test.log(Status.PASS, "Click 'Continue' button");
 
         // Add products to cart, navigate to cart page and click proceed to checkout button
         homePage.addProductToCart(0)
@@ -171,6 +189,7 @@ public class PlaceOrderTest extends BaseTest {
                 .addProductToCart(1)
                 .viewCart()
                 .proceedToCheckout();
+        test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceed to checkout button");
 
         // Check that the delivery address is visible
         Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
@@ -179,6 +198,7 @@ public class PlaceOrderTest extends BaseTest {
         String message = "Test message";
         checkoutPage.addOrderMessage(message)
                     .clickPlaceOrder();
+        test.log(Status.PASS, "Add order message and click place order button");
 
         // Fill Payment data and confirm order
         paymentData.setNameOnCard("Pat Kat")
@@ -187,15 +207,16 @@ public class PlaceOrderTest extends BaseTest {
                     .setExpirationMonth("05")
                     .setExpirationYear("2028");
         paymentPage.enterPaymentInformation(paymentData);
+        test.log(Status.PASS, "Fill Payment data and confirm order");
 
         // Verify success message
         Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
 
         // Click 'Delete Account' button
         homePage.deleteAccount();
+        test.log(Status.PASS, "Click 'Delete Account' button");
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
 
     }
@@ -204,16 +225,18 @@ public class PlaceOrderTest extends BaseTest {
     @Test
     public void loginBeforeCheckoutTest() {
 
-        //Create instances
+        // Create instances
         HomePage homePage = new HomePage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);
         PaymentData paymentData = new PaymentData();
         PaymentPage paymentPage = new PaymentPage(driver);
+        ExtentTest test = extentReports.createTest("Remove Products From Cart");
 
         // Accept cookies and navigate to login page
         homePage.consentCookies()
                 .openSignInAndLoginPage()
                 .loginToAccount("exis1tUser1312311@tests.com", "Test123");
+        test.log(Status.PASS, "Accept cookies and navigate to login page");
 
         // Verify that the logged-in user text contains "Logged in as"
         Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
@@ -225,6 +248,7 @@ public class PlaceOrderTest extends BaseTest {
                 .continueShopping()
                 .viewCart()
                 .proceedToCheckout();
+        test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceedToCheckout page");
 
         // Check that the delivery address is visible
         Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
@@ -233,6 +257,7 @@ public class PlaceOrderTest extends BaseTest {
         String message = "Test message";
         checkoutPage.addOrderMessage(message)
                 .clickPlaceOrder();
+        test.log(Status.PASS, "Add order message and click place order button");
 
         // Fill Payment data and confirm order
         paymentData.setNameOnCard("Pat Kat")
@@ -241,12 +266,14 @@ public class PlaceOrderTest extends BaseTest {
                 .setExpirationMonth("05")
                 .setExpirationYear("2028");
         paymentPage.enterPaymentInformation(paymentData);
+        test.log(Status.PASS, "Fill Payment data and confirm order");
 
         // Verify success message
         Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
 
         // Click 'Delete Account' button
         homePage.deleteAccount();
+        test.log(Status.PASS, "Click 'Delete Account' button");
 
         // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);

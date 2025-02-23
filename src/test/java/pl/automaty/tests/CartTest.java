@@ -1,5 +1,7 @@
 package pl.automaty.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -108,6 +110,7 @@ public class CartTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         CartPage cartPage = new CartPage(driver);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        ExtentTest test = extentReports.createTest("Remove products from cart");
 
         // Add products to cart, navigate to cart page and click proceedToCheckout page
         homePage.consentCookies()
@@ -116,18 +119,20 @@ public class CartTest extends BaseTest {
                 .addProductToCart(1)
                 .continueShopping()
                 .viewCart();
+        test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceedToCheckout page");
         // Get the number of products before deletion
         int productCountBefore = cartPage.getNumberOfProducts();
 
         // Delete the first product from the cart
         cartPage.deleteProduct(0);
         wait.until(driver -> cartPage.getNumberOfProducts() == productCountBefore - 1);
+        test.log(Status.PASS, "Delete the first product from the cart");
         // Get the number of products after deletion
         int productCountAfter = cartPage.getNumberOfProducts();
 
         // Assert that the product count has decreased by one
         Assert.assertEquals(productCountAfter, productCountBefore - 1);
-
+        test.log(Status.PASS, "Product count has decreased by one");
     }
 
 }
