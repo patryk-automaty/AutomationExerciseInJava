@@ -12,21 +12,31 @@ public class SubscriptionTest extends BaseTest {
     @Test
     public void SendSubscriptionTestInHomePage() {
 
-        // Create instances and define subscription email
-        String subscriptionEmail = "testEmail@email.com";
+        // Define expected values
+        final String subscriptionEmail = "testEmail@email.com";
+        final String expectedSubscriptionHeader = "SUBSCRIPTION";
+        final String expectedSuccessMessage = "You have been successfully subscribed!";
+
+        // Create instances for reporting and pages
         HomePage homePage = new HomePage(driver);
-        ExtentTest test = extentReports.createTest("Verify Subscription in home page");
+        ExtentTest test = extentReports.createTest("Verify Subscription in Home page");
+
+        // Accept cookies
+        homePage.consentCookies();
 
         // Verify text 'SUBSCRIPTION'
-        Assert.assertEquals(homePage.subscriptionHeaderText(), "Subscription");
+        String actualHeaderText = homePage.subscriptionHeaderText().getText();
+        Assert.assertEquals(actualHeaderText, expectedSubscriptionHeader);
+        test.log(Status.PASS, "Verified subscription header. Expected: '" + expectedSubscriptionHeader + ", Found: " + actualHeaderText);
 
         // Enter email address in input and click arrow button
         homePage.sendSubscriptionEmail(subscriptionEmail);
-        test.log(Status.PASS, "Enter email address in input and click arrow button");
+        test.log(Status.PASS, "Entered email address in input and clicked arrow button");
 
         // Verify success message 'You have been successfully subscribed!' is visible
-        Assert.assertEquals(homePage.successSubMessageText(), "You have been successfully subscribed!'");
-        test.log(Status.PASS, "Verify success message 'You have been successfully subscribed!' is visible");
+        String actualSuccessMessage = homePage.successSubMessageText();
+        Assert.assertEquals(actualSuccessMessage, expectedSuccessMessage);
+        test.log(Status.PASS, "Verified success message. Expected: '" + expectedSuccessMessage + ", Found: '" + actualSuccessMessage);
 
     }
 
@@ -34,24 +44,32 @@ public class SubscriptionTest extends BaseTest {
     @Test
     public void SendSubscriptionTestInCartPage() {
 
-        // Create instances and define subscription email
-        String subscriptionEmail = "testEmail@email.com";
+        // Define subscription email
+        final String subscriptionEmail = "testEmail@email.com";
+        final String expectedSubscriptionHeader = "SUBSCRIPTION";
+        final String expectedSuccessMessage = "YOU HAVE BEEN SUCCESSFULLY SUBSCRIBED!";
+
+        // Create instances for reporting and pages
         HomePage homePage = new HomePage(driver);
         ExtentTest test = extentReports.createTest("Verify Subscription in Cart page");
-        // Navigate to cart page
-        homePage.viewCart();
-        test.log(Status.PASS, "Navigate to cart page");
+
+        // Accept Cookies and navigate to cart page
+        homePage.consentCookies()
+                .viewCart();
+        test.log(Status.PASS, "Navigated to cart page");
+
         // Verify text 'SUBSCRIPTION'
-        Assert.assertEquals(homePage.subscriptionHeaderText(), "Subscription");
+        String actualHeaderText = homePage.subscriptionHeaderText().getText();
+        Assert.assertEquals(actualHeaderText, expectedSubscriptionHeader);
+        test.log(Status.PASS, "Verified subscription header. Expected: '" + expectedSubscriptionHeader + ", Found: " + actualHeaderText);
 
         // Enter email address in input and click arrow button
         homePage.sendSubscriptionEmail(subscriptionEmail);
-        test.log(Status.PASS, "Enter email address in input and click arrow button");
+        test.log(Status.PASS, "Entered email address in input and clicked arrow button");
 
         // Verify success message 'You have been successfully subscribed!' is visible
-        Assert.assertEquals(homePage.successSubMessageText(), "You have been successfully subscribed!'");
+        String actualSuccessMessage = homePage.successSubMessageText().toUpperCase();
+        Assert.assertEquals(actualSuccessMessage, expectedSuccessMessage);
+        test.log(Status.PASS, "Verified success message. Expected: '" + expectedSuccessMessage + ", Found: '" + actualSuccessMessage);
     }
-
-
-
 }

@@ -219,8 +219,8 @@ public class HomePage {
         return new ProductsPage(driver);
     }
 
-    public String subscriptionHeaderText() {
-        return subscriptionHeader.getText();
+    public WebElement subscriptionHeaderText() {
+        return subscriptionHeader;
     }
 
     public HomePage sendSubscriptionEmail(String email) {
