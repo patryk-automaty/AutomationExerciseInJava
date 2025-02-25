@@ -40,6 +40,9 @@ public class TestDataGenerator {
         signUpData.setZipcode(faker.address().zipCode());
         signUpData.setMobileNumber(faker.phoneNumber().cellPhone());
 
+        signUpData.setUsername(faker.name().username());
+        signUpData.setEmail(faker.internet().emailAddress());
+
         return signUpData;
     }
 

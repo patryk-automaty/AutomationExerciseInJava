@@ -20,15 +20,23 @@ public class TestCaseTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         TestCasePage testCasePage = new TestCasePage(driver);
         ExtentTest test = extentReports.createTest("Verify Test Cases Page");
+        try {
+            // Accept cookies and navigate to test case page
+            homePage.consentCookies()
+                    .testCase();
+            test.log(Status.PASS, "Accepted cookies and navigated to test case page");
 
-        // Accept cookies and navigate to test case page
-        homePage.consentCookies()
-                .testCase();
-        test.log(Status.PASS, "Accepted cookies and navigated to test case page");
+            // Verify that the test case header contains the text 'TEST CASES'
+            String actualTestCaseHeaderText = testCasePage.getTestCaseHeader();
+            Assert.assertEquals(actualTestCaseHeaderText, expectedTestCaseHeader);
+            test.log(Status.PASS, "Verified that the test case header contains the text 'TEST CASES'");
 
-        // Verify that the test case header contains the text 'TEST CASES'
-        String actualTestCaseHeaderText = testCasePage.getTestCaseHeader();
-        Assert.assertEquals(actualTestCaseHeaderText, expectedTestCaseHeader);
-        test.log(Status.PASS, "Verified that the test case header contains the text 'TEST CASES'");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: Expected '" + expectedTestCaseHeader + "', but found '" + testCasePage.getTestCaseHeader() + "'");
+            throw e; // Failed due assertion
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test failed due to unexpected error: " + e.getMessage());
+            throw e; // Failed due to unexpected error
+        }
     }
 }
