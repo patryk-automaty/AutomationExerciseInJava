@@ -17,55 +17,68 @@ import java.util.List;
 
 public class ProductTest extends BaseTest {
 
-    // Test Case 8
+    // TC 8
     @Test
     public void ProductPageTest() {
 
-        // Create instances
+        // Create instances for reporting and pages
         HomePage homePage = new HomePage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
         ExtentTest test = extentReports.createTest("Verify All Products and product detail page");
+        try {
+            // Accept cookies, navigate to the product page
+            homePage.consentCookies()
+                    .productNavBar();
+            test.log(Status.PASS, "Accepted cookies and navigated to the product page");
 
-        // Accept cookies, navigate to the product page
-        homePage.consentCookies()
-                .productNavBar();
-        test.log(Status.PASS, "Accept cookies, navigate to the product page");
+            // Verify that products list is visible
+            Assert.assertTrue(productsPage.isProductListVisible());
+            test.log(Status.PASS, "Verified that products list is visible");
 
-        // Verify that products list is visible
-        Assert.assertTrue(productsPage.isProductListVisible());
-        test.log(Status.PASS, "Verify that products list is visible");
+            productsPage.clickItem(0);
+            test.log(Status.PASS, "Clicked the first item on the list");
 
-        productsPage.clickItem(0);
-        test.log(Status.PASS, "Click the first item on the list");
-
-        // Verify that details is visible: product name, category, price, availability, condition, brand
-        Assert.assertTrue(productsPage.getProductName().isDisplayed());
-        Assert.assertTrue(productsPage.getProductHeader().isDisplayed());
-        Assert.assertTrue(productsPage.getProductPrice().isDisplayed());
-        Assert.assertTrue(productsPage.getProductAvailability().isDisplayed());
-        Assert.assertTrue(productsPage.getProductCondition().isDisplayed());
-        Assert.assertTrue(productsPage.getProductBrand().isDisplayed());
-        test.log(Status.PASS, "Verify that details is visible: product name, category, price, availability, condition, brand");
+            // Verify that details is visible: product name, category, price, availability, condition, brand
+            Assert.assertTrue(productsPage.getProductName().isDisplayed());
+            Assert.assertTrue(productsPage.getProductHeader().isDisplayed());
+            Assert.assertTrue(productsPage.getProductPrice().isDisplayed());
+            Assert.assertTrue(productsPage.getProductAvailability().isDisplayed());
+            Assert.assertTrue(productsPage.getProductCondition().isDisplayed());
+            Assert.assertTrue(productsPage.getProductBrand().isDisplayed());
+            test.log(Status.PASS, "Verify that details is visible: product name, category, price, availability, condition, brand");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            throw e;
+        }
     }
 
-    // Test Case 9
+    // TC 9
     @Test
     public void SearchProductTest() {
+
+        // Define search product name
         String searchProductName = "dress";
+
+        // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
         ExtentTest test = extentReports.createTest("Search Product");
 
+        // Accept cookies, navigate to the product page
         homePage.consentCookies()
                 .productNavBar();
-        test.log(Status.PASS, "Accept cookies, navigate to the product page");
+        test.log(Status.PASS, "Accepted cookies and navigate to the product page");
 
         // Enter product name in search input and click search button
         productsPage.searchProduct(searchProductName);
-        test.log(Status.PASS, "Enter product name in search input and click search button");
+        test.log(Status.PASS, "Entered product name in search input and clicked search button");
 
         // Verify 'SEARCHED PRODUCTS' is visible
         Assert.assertTrue(productsPage.getSearchedProductsHeader().isDisplayed());
+        test.log(Status.PASS, "Verified 'SEARCHED PRODUCTS' is visible");
 
         // Get all product names to the list
         List<String> searchedProductTitles = productsPage.getProductListTexts();

@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import pl.automaty.model.PaymentData;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.*;
+import pl.automaty.utils.TestDataGenerator;
 
 public class PlaceOrderTest extends BaseTest {
 
@@ -25,101 +26,105 @@ public class PlaceOrderTest extends BaseTest {
         ExtentTest test = extentReports.createTest("Place Order: Register while Checkout");
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
 
-        // Add products to cart and navigate to cart page
-        homePage.consentCookies()
-                .addProductToCart(0)
-                .continueShopping()
-                .addProductToCart(1)
-                .viewCart();
-        test.log(Status.PASS, "Add products to cart and navigate to cart page");
-        // Click 'Proceed To Checkout' button
-        cartPage.proceedToCheckout()
-                .registerOrLogin();
-        test.log(Status.PASS, "Click 'Proceed To Checkout' button");
+        try {
+            // Add products to cart and navigate to cart page
+            homePage.consentCookies()
+                    .addProductToCart(0)
+                    .continueShopping()
+                    .addProductToCart(1)
+                    .viewCart();
+            test.log(Status.PASS, "Added products to cart and navigate to cart page");
 
-        // Sign up new user
-        loginPage.SignUpUser("janusz", "ja2nus111z123@mail123123.com");
-        test.log(Status.PASS, "Sign up new user");
+            // Click 'Proceed To Checkout' button
+            cartPage.proceedToCheckout()
+                    .registerOrLogin();
+            test.log(Status.PASS, "Clicked 'Proceed To Checkout' button");
 
-        // Account information data
-        SignUpData signUpData = new SignUpData();
-        signUpData.setGender("Mr");
-        signUpData.setName("Pat");
-        signUpData.setPassword("Test123");
-        signUpData.setBirthDay("11");
-        signUpData.setBirthMonth("3");
-        signUpData.setBirthYear("2000");
-        signUpData.setNewsletter(Boolean.TRUE);
-        signUpData.setOffer(Boolean.TRUE);
+            // Generate and save test data
+            SignUpData signUpData = TestDataGenerator.generateTestData();
+            TestDataGenerator.saveTestData(signUpData);
 
-        // Address information data
-        signUpData.setFirstName("Pat");
-        signUpData.setLastName("Kat");
-        signUpData.setCompany("Januszex");
-        signUpData.setAddress1("Random Address");
-        signUpData.setAddress2("Continue random address 3/15");
-        signUpData.setCountry("Canada");
-        signUpData.setState("Mazovia");
-        signUpData.setCity("Warsaw");
-        signUpData.setZipcode("00-000 Warsaw");
-        signUpData.setMobileNumber("123123123");
+            // Sign up new user
+            loginPage.SignUpUser(signUpData.getName(), signUpData.getEmail());
+            test.log(Status.PASS, "Signed up new user");
 
-        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            // Verify that 'ENTER ACCOUNT INFORMATION' is visible
+            Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            test.log(Status.PASS, "Verified that 'ENTER ACCOUNT INFORMATION' is visible");
+            // Load test data from JSON
+            SignUpData loadedData = TestDataGenerator.loadTestData();
 
-        // Fill account information
-        signUpPage.EnterAccountInformation(signUpData);
-        test.log(Status.PASS, "Fill account information");
+            // Fill in account information using loaded test data
+            signUpPage.EnterAccountInformation(loadedData);
+            test.log(Status.PASS, "Entered account information");
 
-        // Fill address information
-        signUpPage.EnterAddressInformation(signUpData);
-        test.log(Status.PASS, "Fill address information");
+            // Fill in address information
+            signUpPage.EnterAddressInformation(loadedData);
+            test.log(Status.PASS, "Entered address information");
 
-        // Verify that 'ACCOUNT CREATED!' is visible
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+            // Fill account information
+            signUpPage.EnterAccountInformation(signUpData);
+            test.log(Status.PASS, "Filled account information");
 
-        // Click 'Continue' button
-        accountCreatedPage.clickContinue();
-        test.log(Status.PASS, "Click 'Continue' button");
+            // Fill address information
+            signUpPage.EnterAddressInformation(signUpData);
+            test.log(Status.PASS, "Filled address information");
 
-        // Verify that 'Logged in as username' is visible
-        Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+            // Verify that 'ACCOUNT CREATED!' is visible
+            Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+            test.log(Status.PASS, "Verified that 'ACCOUNT CREATED!' is visible");
 
-        // Navigate to cart page
-        homePage.viewCart();
-        test.log(Status.PASS, "Navigate to cart page");
+            // Click 'Continue' button
+            accountCreatedPage.clickContinue();
+            test.log(Status.PASS, "Clicked 'Continue' button");
 
-        // Click 'Proceed To Checkout' button
-        cartPage.proceedToCheckout();
-        test.log(Status.PASS, "Click 'Proceed To Checkout' button");
+            // Verify that 'Logged in as username' is visible
+            Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+            test.log(Status.PASS, "Verified that 'Logged in as username' is visible");
 
-        // Check that the delivery address is visible
-        Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
+            // Navigate to cart page
+            homePage.viewCart();
+            test.log(Status.PASS, "Navigated to cart page");
 
-        //Click Place Order button
-        checkoutPage.clickPlaceOrder();
-        test.log(Status.PASS, "Click Place Order button");
+            // Click 'Proceed To Checkout' button
+            cartPage.proceedToCheckout();
+            test.log(Status.PASS, "Clicked 'Proceed To Checkout' button");
 
-        // Fill Payment data and confirm order
-        paymentData.setNameOnCard("Pat Kat")
+            // Check that the delivery address is visible
+            Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
+            test.log(Status.PASS, "Checked that the delivery address is visible");
+
+            //Click Place Order button
+            checkoutPage.clickPlaceOrder();
+            test.log(Status.PASS, "Clicked Place Order button");
+
+            // Fill Payment data and confirm order
+            paymentData.setNameOnCard("Pat Kat")
                     .setCardNumber("123123532")
                     .setCvcCode("123")
                     .setExpirationMonth("05")
                     .setExpirationYear("2028");
-        paymentPage.enterPaymentInformation(paymentData);
-        test.log(Status.PASS, "Fill Payment data and confirm order");
+            paymentPage.enterPaymentInformation(paymentData);
+            test.log(Status.PASS, "Filled Payment data and confirm order");
 
-        // Verify success message
-        Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
+            // Verify success message
+            Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
+            test.log(Status.PASS, "Verified success message");
 
-        // Click 'Delete Account' button
-        homePage.deleteAccount();
-        test.log(Status.PASS, "Click 'Delete Account' button");
+            // Click 'Delete Account' button
+            homePage.deleteAccount();
+            test.log(Status.PASS, "Clicked 'Delete Account' button");
 
-        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+            // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+            Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            throw e;
+        }
     }
-
     // TC 15
     @Test
     public void registerBeforeCheckoutTest() {

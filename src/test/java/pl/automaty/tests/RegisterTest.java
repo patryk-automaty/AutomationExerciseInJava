@@ -16,70 +16,76 @@ import java.io.IOException;
 
 public class RegisterTest extends BaseTest {
 
-    // Test Case 1
+    // TC 1
     @Test
     public void RegisterUserTest() {
 
         // Create instance for reporting
         ExtentTest test = extentReports.createTest("Register User");
+
+        // Create instances for pages
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+
+        // Generate and save test data
+        SignUpData signUpData = TestDataGenerator.generateTestData();
+        TestDataGenerator.saveTestData(signUpData);
+
+        // Load test data from JSON
+        SignUpData loadedData = TestDataGenerator.loadTestData();
+
+        // Define expected results
+        String expectedAccountInformationText = "ENTER ACCOUNT INFORMATION";
+        String expectedAccountCreatedText = "ACCOUNT CREATED!";
+        String expectedDeletedMessage = "ACCOUNT DELETED!";
+
         try {
-            // Create instances for pages
-            HomePage homePage = new HomePage(driver);
-            LoginPage loginPage = new LoginPage(driver);
-            SignUpPage signUpPage = new SignUpPage(driver);
-            AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-            DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-
-            // Step 1: Generate and save test data
-            SignUpData signUpData = TestDataGenerator.generateTestData();
-            TestDataGenerator.saveTestData(signUpData);
-
-            // Step 2: Load test data from JSON
-            SignUpData loadedData = TestDataGenerator.loadTestData();
-
-            // Step 3: Open home page and navigate to login page
+            // Open home page and navigate to login page
             homePage.consentCookies()
                     .openSignInAndLoginPage();
             test.log(Status.PASS, "Opened home page and navigated to login page");
 
-            // Step 4: Sign up new user with generated test data
-            loginPage.SignUpUser(loadedData.getName(), loadedData.getName() + "@testmail.com");
+            // Sign up new user with generated test data
+            loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
             test.log(Status.PASS, "Entered sign-up details");
 
-            // Step 5: Verify 'ENTER ACCOUNT INFORMATION' text is displayed
-            Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            // Verify 'ENTER ACCOUNT INFORMATION' text is displayed
+            String actualAccountInformationText = signUpPage.getEnterAccountInformationText();
+            Assert.assertEquals(actualAccountInformationText, expectedAccountInformationText);
             test.log(Status.PASS, "Verified account information section is visible");
 
-            // Step 6: Fill in account information using loaded test data
+            // Fill in account information using loaded test data
             signUpPage.EnterAccountInformation(loadedData);
             test.log(Status.PASS, "Entered account information");
 
-            // Step 7: Fill in address information
+            // Fill in address information
             signUpPage.EnterAddressInformation(loadedData);
             test.log(Status.PASS, "Entered address information");
 
-            // Step 8: Verify 'ACCOUNT CREATED!' text is displayed
-            Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+            // Verify 'ACCOUNT CREATED!' text is displayed
+            String actualAccountCreatedText = accountCreatedPage.getAccountCreatedText();
+            Assert.assertEquals(actualAccountCreatedText, expectedAccountCreatedText);
             test.log(Status.PASS, "Verified account was created successfully");
 
-            // Step 9: Click 'Continue' button
+            // Click 'Continue' button
             accountCreatedPage.clickContinue();
             test.log(Status.PASS, "Clicked 'Continue' button");
 
-            // Step 10: Verify that the user is logged in
+            // Verify that the user is logged in
             String loggedInMessage = homePage.loggedUserText();
             Assert.assertTrue(loggedInMessage.contains("Logged in as"),
                     "Expected 'Logged in as' message to be visible. Actual message: " + loggedInMessage);
             test.log(Status.PASS, "Verified that the user is logged in: '" + loggedInMessage + "'");
 
-            // Step 11: Click 'Delete Account' button
+            // Click 'Delete Account' button
             homePage.deleteAccount();
             test.log(Status.PASS, "Clicked 'Delete Account' button");
 
-            // Step 12: Verify 'ACCOUNT DELETED!' message is displayed
-
+            // Verify 'ACCOUNT DELETED!' message is displayed
             String actualDeletedMessage = deleteAccountPage.getAccountDeletedText();
-            String expectedDeletedMessage = "ACCOUNT DELETED!1";
             Assert.assertEquals(actualDeletedMessage, expectedDeletedMessage,
                     "Expected account deletion message: '" + expectedDeletedMessage + "'. Actual message:'" + actualDeletedMessage + "'");
             test.log(Status.PASS, "Verified account deletion message: '" + actualDeletedMessage + "'");
@@ -92,7 +98,7 @@ public class RegisterTest extends BaseTest {
     }
 
 
-    // Test Case 5
+    // TC 5
     @Test
     public void RegisterExistUserTest() throws IOException {
 
@@ -103,6 +109,7 @@ public class RegisterTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         SignUpPage signUpPage = new SignUpPage(driver);
         LoginPage loginPage = new LoginPage(driver);
+        TestDataGenerator testDataGenerator = new TestDataGenerator();
 
         // Create instance for reporting
         ExtentTest test = extentReports.createTest("Register Existing User Test");
@@ -110,7 +117,13 @@ public class RegisterTest extends BaseTest {
         // Create ObjectMapper instance
         ObjectMapper objectMapper = new ObjectMapper();
 
+        // Define expected results
+        String expectedErrorMessage = "Email Address already exist!";
+
         try {
+            // Create new user
+            testDataGenerator.RegisterUser();
+
             // Read JSON file as a tree (JsonNode)
             JsonNode rootNode = objectMapper.readTree(new File(DATA_PATH));
 
@@ -129,7 +142,6 @@ public class RegisterTest extends BaseTest {
             test.log(Status.PASS, "Attempted to sign up with existing email: " + existAccountEmail);
 
             // Verify error message is displayed
-            String expectedErrorMessage = "Email Address already exist!";
             String actualErrorMessage = signUpPage.getExistEmailText();
             Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
             test.log(Status.PASS, "Verified error message for existing email: '" + actualErrorMessage + "'");
@@ -140,53 +152,6 @@ public class RegisterTest extends BaseTest {
             test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
             throw e;
         }
-    }
-
-    @Test(enabled = true)
-    public void RegisterUserToTest2() {
-
-        // Create instances for reporting and pages
-        ExtentTest test = extentReports.createTest("Register User");
-        HomePage homePage = new HomePage(driver);
-        LoginPage loginPage = new LoginPage(driver);
-        SignUpPage signUpPage = new SignUpPage(driver);
-        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-
-        // Step 1: Generate and save test data
-        SignUpData signUpData = TestDataGenerator.generateTestData();
-        TestDataGenerator.saveTestData(signUpData);
-
-        // Step 2: Load test data from JSON
-        SignUpData loadedData = TestDataGenerator.loadTestData();
-
-        // Step 3: Open home page and navigate to login page
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
-        test.log(Status.PASS, "Opened home page and navigated to login page");
-
-        // Step 4: Sign up new user with generated test data
-        loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
-        test.log(Status.PASS, "Entered sign-up details");
-
-        // Step 5: Verify 'ENTER ACCOUNT INFORMATION' text is displayed
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
-        test.log(Status.PASS, "Verified account information section is visible");
-
-        // Step 6: Fill in account information using loaded test data
-        signUpPage.EnterAccountInformation(loadedData);
-        test.log(Status.PASS, "Entered account information");
-
-        // Step 7: Fill in address information
-        signUpPage.EnterAddressInformation(loadedData);
-        test.log(Status.PASS, "Entered address information");
-
-        // Step 8: Verify 'ACCOUNT CREATED!' text is displayed
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
-        test.log(Status.PASS, "Verified account was created successfully");
-
-        // Step 9: Click 'Continue' button
-        accountCreatedPage.clickContinue();
-        test.log(Status.PASS, "Clicked 'Continue' button");
     }
 }
 

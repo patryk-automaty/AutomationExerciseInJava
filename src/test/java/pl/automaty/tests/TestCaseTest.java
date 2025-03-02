@@ -30,13 +30,12 @@ public class TestCaseTest extends BaseTest {
             String actualTestCaseHeaderText = testCasePage.getTestCaseHeader();
             Assert.assertEquals(actualTestCaseHeaderText, expectedTestCaseHeader);
             test.log(Status.PASS, "Verified that the test case header contains the text 'TEST CASES'");
-
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Assertion failed: Expected '" + expectedTestCaseHeader + "', but found '" + testCasePage.getTestCaseHeader() + "'");
-            throw e; // Failed due assertion
+            throw e;
         } catch (Exception e) {
             test.log(Status.FAIL, "Test failed due to unexpected error: " + e.getMessage());
-            throw e; // Failed due to unexpected error
+            throw e;
         }
     }
 }
