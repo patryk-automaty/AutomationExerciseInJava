@@ -1,7 +1,13 @@
 package pl.automaty.utils;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
+import org.openqa.selenium.WebDriver;
 import pl.automaty.model.SignUpData;
+import pl.automaty.pages.AccountCreatedPage;
+import pl.automaty.pages.HomePage;
+import pl.automaty.pages.LoginPage;
+import pl.automaty.pages.SignUpPage;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +17,7 @@ import java.util.Random;
 public class TestDataGenerator {
 
     private static final String FILE_PATH = "src/test/java/pl/automaty/model/testData.json";
+    private WebDriver driver;
 
     // Method to generate random test data using Faker
     public static SignUpData generateTestData() {
@@ -66,4 +73,37 @@ public class TestDataGenerator {
             return null;
         }
     }
+    public void RegisterUser() {
+
+        // Create instances
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+
+        // Generate and save test data
+        SignUpData signUpData = TestDataGenerator.generateTestData();
+        TestDataGenerator.saveTestData(signUpData);
+
+        // Load test data from JSON
+        SignUpData loadedData = TestDataGenerator.loadTestData();
+
+        // Open home page and navigate to login page
+        homePage.consentCookies()
+                .openSignInAndLoginPage();
+
+        // Sign up new user with generated test data
+        loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
+
+        // Fill in account information using loaded test data
+        signUpPage.EnterAccountInformation(loadedData);
+
+        // Fill in address information
+        signUpPage.EnterAddressInformation(loadedData);
+
+        // Click 'Continue' button
+        accountCreatedPage.clickContinue();
+
+    }
+
 }
