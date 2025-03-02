@@ -66,52 +66,57 @@ public class ProductTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
         ExtentTest test = extentReports.createTest("Search Product");
+        try {
+            // Accept cookies, navigate to the product page
+            homePage.consentCookies()
+                    .productNavBar();
+            test.log(Status.PASS, "Accepted cookies and navigate to the product page");
 
-        // Accept cookies, navigate to the product page
-        homePage.consentCookies()
-                .productNavBar();
-        test.log(Status.PASS, "Accepted cookies and navigate to the product page");
+            // Enter product name in search input and click search button
+            productsPage.searchProduct(searchProductName);
+            test.log(Status.PASS, "Entered product name in search input and clicked search button");
 
-        // Enter product name in search input and click search button
-        productsPage.searchProduct(searchProductName);
-        test.log(Status.PASS, "Entered product name in search input and clicked search button");
+            // Verify 'SEARCHED PRODUCTS' is visible
+            Assert.assertTrue(productsPage.getSearchedProductsHeader().isDisplayed());
+            test.log(Status.PASS, "Verified 'SEARCHED PRODUCTS' is visible");
 
-        // Verify 'SEARCHED PRODUCTS' is visible
-        Assert.assertTrue(productsPage.getSearchedProductsHeader().isDisplayed());
-        test.log(Status.PASS, "Verified 'SEARCHED PRODUCTS' is visible");
+            // Get all product names to the list
+            List<String> searchedProductTitles = productsPage.getProductListTexts();
 
-        // Get all product names to the list
-        List<String> searchedProductTitles = productsPage.getProductListTexts();
+            // Number of all searched products
+            int totalProducts = searchedProductTitles.size();
 
-        // Number of all searched products
-        int totalProducts = searchedProductTitles.size();
+            // Number of matched products with searchProductName
+            int matchingProducts = 0;
+            SoftAssert softAssert = new SoftAssert();
 
-        // Number of matched products with searchProductName
-        int matchingProducts = 0;
-        SoftAssert softAssert = new SoftAssert();
-
-        // Iterate through all product titles and check if they contain the keyword
-        System.out.println("Search results:");
-        for (String title : searchedProductTitles) {
+            // Iterate through all product titles and check if they contain the keyword
+            System.out.println("Search results:");
+            for (String title : searchedProductTitles) {
                 String productTitle = title.toLowerCase();
                 boolean containsWord = productTitle.contains(searchProductName);
 
-                if(containsWord) {
+                if (containsWord) {
                     matchingProducts++;
                     System.out.println("OK: " + productTitle);
-                }
-                else {
+                } else {
                     System.out.println("ERROR: " + productTitle);
                 }
 
                 // Soft assertion - test execution will continue even if this assertion fails
-                softAssert.assertTrue(containsWord, "Product not include '" + searchProductName + "': "+ productTitle);
+                softAssert.assertTrue(containsWord, "Product not include '" + searchProductName + "': " + productTitle);
             }
 
-        // Final assertion - If assertion find error, assertion will fail
-        softAssert.assertAll();
-        test.log(Status.PASS, "Iterate through all product titles and check if they contain the keyword");
+            // Final assertion - If assertion find error, assertion will fail
+            softAssert.assertAll();
+            test.log(Status.PASS, "Iterate through all product titles and check if they contain the keyword");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
         }
+    }
 
     // TC 18
     @Test
@@ -119,26 +124,33 @@ public class ProductTest extends BaseTest {
         //Create instances
         HomePage homePage = new HomePage(driver);
         ExtentTest test = extentReports.createTest("View Category Products");
+        try {
+            // Accept cookies
+            homePage.consentCookies();
+            test.log(Status.PASS, "Accept cookies");
 
-        // Accept cookies
-        homePage.consentCookies();
-        test.log(Status.PASS, "Accept cookies");
+            // Verify that the category section is visible
+            Assert.assertEquals(homePage.getSideCategoryHeader(), "Category".toUpperCase());
 
-        // Verify that the category section is visible
-        Assert.assertEquals(homePage.getSideCategoryHeader(), "Category".toUpperCase());
+            // Click on 'Women' category and choose Dress
+            homePage.chooseWomenCategory();
+            homePage.clickOnWomenCategory("Dress");
+            test.log(Status.PASS, "Click on 'Women' category and choose Dress");
 
-        // Click on 'Women' category and choose Dress
-        homePage.chooseWomenCategory();
-        homePage.clickOnWomenCategory("Dress");
-        test.log(Status.PASS, "Click on 'Women' category and choose Dress");
+            // Verify that the category section is visible
+            Assert.assertEquals(homePage.getCategoryHeader(), "Women - Dress Products".toUpperCase());
 
-        // Verify that the category section is visible
-        Assert.assertEquals(homePage.getCategoryHeader(), "Women - Dress Products".toUpperCase());
-
-        //  On left sidebar, click on any sub-category link of 'Men' category
-        homePage.chooseMenCategory();
-        homePage.clickOnMenCategory("Jeans");
-        test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar");
+            //  On left sidebar, click on any sub-category link of 'Men' category
+            homePage.chooseMenCategory();
+            homePage.clickOnMenCategory("Jeans");
+            test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            throw e;
+        }
     }
 }
 

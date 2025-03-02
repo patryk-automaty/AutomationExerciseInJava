@@ -41,7 +41,7 @@ public class PlaceOrderTest extends BaseTest {
             test.log(Status.PASS, "Clicked 'Proceed To Checkout' button");
 
             // Generate and save test data
-            SignUpData signUpData = TestDataGenerator.generateTestData();
+            SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
             TestDataGenerator.saveTestData(signUpData);
 
             // Sign up new user
@@ -129,7 +129,7 @@ public class PlaceOrderTest extends BaseTest {
     @Test
     public void registerBeforeCheckoutTest() {
 
-        // Create instances
+        // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);
@@ -137,152 +137,166 @@ public class PlaceOrderTest extends BaseTest {
         PaymentData paymentData = new PaymentData();
         SignUpPage signUpPage = new SignUpPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-        ExtentTest test = extentReports.createTest("Place Order: Register before Checkout");
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+        ExtentTest test = extentReports.createTest("Place Order: Register before Checkout");
 
-        // Accept cookies and navigate to login page
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
-        test.log(Status.PASS, "Accept cookies and navigate to login page");
-        // Sign up new user
-        loginPage.SignUpUser("janusz", "ja112nusmai@l123123.com");
+        try {
+            // Accept cookies and navigate to login page
+            homePage.consentCookies()
+                    .openSignInAndLoginPage();
+            test.log(Status.PASS, "Accept cookies and navigate to login page");
+            // Sign up new user
+            loginPage.SignUpUser("janusz", "ja112nusmai@l123123.com");
 
-        // Account information data
-        SignUpData signUpData = new SignUpData();
-        signUpData.setGender("Mr");
-        signUpData.setName("Pat");
-        signUpData.setPassword("Test123");
-        signUpData.setBirthDay("11");
-        signUpData.setBirthMonth("3");
-        signUpData.setBirthYear("2000");
-        signUpData.setNewsletter(Boolean.TRUE);
-        signUpData.setOffer(Boolean.TRUE);
+            // Account information data
+            SignUpData signUpData = new SignUpData();
+            signUpData.setGender("Mr");
+            signUpData.setName("Pat");
+            signUpData.setPassword("Test123");
+            signUpData.setBirthDay("11");
+            signUpData.setBirthMonth("3");
+            signUpData.setBirthYear("2000");
+            signUpData.setNewsletter(Boolean.TRUE);
+            signUpData.setOffer(Boolean.TRUE);
 
-        // Address information data
-        signUpData.setFirstName("Pat");
-        signUpData.setLastName("Kat");
-        signUpData.setCompany("Januszex");
-        signUpData.setAddress1("Random Address");
-        signUpData.setAddress2("Continue random address 3/15");
-        signUpData.setCountry("Canada");
-        signUpData.setState("Mazovia");
-        signUpData.setCity("Warsaw");
-        signUpData.setZipcode("00-000 Warsaw");
-        signUpData.setMobileNumber("123123123");
+            // Address information data
+            signUpData.setFirstName("Pat");
+            signUpData.setLastName("Kat");
+            signUpData.setCompany("Januszex");
+            signUpData.setAddress1("Random Address");
+            signUpData.setAddress2("Continue random address 3/15");
+            signUpData.setCountry("Canada");
+            signUpData.setState("Mazovia");
+            signUpData.setCity("Warsaw");
+            signUpData.setZipcode("00-000 Warsaw");
+            signUpData.setMobileNumber("123123123");
 
-        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            // Verify that 'ENTER ACCOUNT INFORMATION' is visible
+            Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
 
-        // Fill account information
-        signUpPage.EnterAccountInformation(signUpData);
-        test.log(Status.PASS, "Fill account information");
+            // Fill account information
+            signUpPage.EnterAccountInformation(signUpData);
+            test.log(Status.PASS, "Fill account information");
 
-        // Fill address information
-        signUpPage.EnterAddressInformation(signUpData);
-        test.log(Status.PASS, "Fill address information");
+            // Fill address information
+            signUpPage.EnterAddressInformation(signUpData);
+            test.log(Status.PASS, "Fill address information");
 
-        // Verify that 'ACCOUNT CREATED!' is visible
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+            // Verify that 'ACCOUNT CREATED!' is visible
+            Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
 
-        // Click 'Continue' button
-        accountCreatedPage.clickContinue();
-        test.log(Status.PASS, "Click 'Continue' button");
+            // Click 'Continue' button
+            accountCreatedPage.clickContinue();
+            test.log(Status.PASS, "Click 'Continue' button");
 
-        // Add products to cart, navigate to cart page and click proceed to checkout button
-        homePage.addProductToCart(0)
-                .continueShopping()
-                .addProductToCart(1)
-                .viewCart()
-                .proceedToCheckout();
-        test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceed to checkout button");
+            // Add products to cart, navigate to cart page and click proceed to checkout button
+            homePage.addProductToCart(0)
+                    .continueShopping()
+                    .addProductToCart(1)
+                    .viewCart()
+                    .proceedToCheckout();
+            test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceed to checkout button");
 
-        // Check that the delivery address is visible
-        Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
+            // Check that the delivery address is visible
+            Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
 
-        // Add order message and click place order button
-        String message = "Test message";
-        checkoutPage.addOrderMessage(message)
+            // Add order message and click place order button
+            String message = "Test message";
+            checkoutPage.addOrderMessage(message)
                     .clickPlaceOrder();
-        test.log(Status.PASS, "Add order message and click place order button");
+            test.log(Status.PASS, "Add order message and click place order button");
 
-        // Fill Payment data and confirm order
-        paymentData.setNameOnCard("Pat Kat")
+            // Fill Payment data and confirm order
+            paymentData.setNameOnCard("Pat Kat")
                     .setCardNumber("123123532")
                     .setCvcCode("123")
                     .setExpirationMonth("05")
                     .setExpirationYear("2028");
-        paymentPage.enterPaymentInformation(paymentData);
-        test.log(Status.PASS, "Fill Payment data and confirm order");
+            paymentPage.enterPaymentInformation(paymentData);
+            test.log(Status.PASS, "Fill Payment data and confirm order");
 
-        // Verify success message
-        Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
+            // Verify success message
+            Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
 
-        // Click 'Delete Account' button
-        homePage.deleteAccount();
-        test.log(Status.PASS, "Click 'Delete Account' button");
+            // Click 'Delete Account' button
+            homePage.deleteAccount();
+            test.log(Status.PASS, "Click 'Delete Account' button");
 
-        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
-
+            // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+            Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            throw e;
+        }
     }
 
     // TC 17
     @Test
     public void loginBeforeCheckoutTest() {
 
-        // Create instances
+        // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
         CheckoutPage checkoutPage = new CheckoutPage(driver);
         PaymentData paymentData = new PaymentData();
         PaymentPage paymentPage = new PaymentPage(driver);
         ExtentTest test = extentReports.createTest("Remove Products From Cart");
 
-        // Accept cookies and navigate to login page
-        homePage.consentCookies()
-                .openSignInAndLoginPage()
-                .loginToAccount("exis1tUser1312311@tests.com", "Test123");
-        test.log(Status.PASS, "Accept cookies and navigate to login page");
+        try {
+            // Accept cookies and navigate to login page
+            homePage.consentCookies()
+                    .openSignInAndLoginPage()
+                    .loginToAccount("exis1tUser1312311@tests.com", "Test123");
+            test.log(Status.PASS, "Accept cookies and navigate to login page");
 
-        // Verify that the logged-in user text contains "Logged in as"
-        Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+            // Verify that the logged-in user text contains "Logged in as"
+            Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
 
-        // Add products to cart, navigate to cart page and click proceedToCheckout page
-        homePage.addProductToCart(0)
-                .continueShopping()
-                .addProductToCart(1)
-                .continueShopping()
-                .viewCart()
-                .proceedToCheckout();
-        test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceedToCheckout page");
+            // Add products to cart, navigate to cart page and click proceedToCheckout page
+            homePage.addProductToCart(0)
+                    .continueShopping()
+                    .addProductToCart(1)
+                    .continueShopping()
+                    .viewCart()
+                    .proceedToCheckout();
+            test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceedToCheckout page");
 
-        // Check that the delivery address is visible
-        Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
+            // Check that the delivery address is visible
+            Assert.assertTrue(checkoutPage.getDeliveryAddress().isDisplayed());
 
-        // Add order message and click place order button
-        String message = "Test message";
-        checkoutPage.addOrderMessage(message)
-                .clickPlaceOrder();
-        test.log(Status.PASS, "Add order message and click place order button");
+            // Add order message and click place order button
+            String message = "Test message";
+            checkoutPage.addOrderMessage(message)
+                    .clickPlaceOrder();
+            test.log(Status.PASS, "Add order message and click place order button");
 
-        // Fill Payment data and confirm order
-        paymentData.setNameOnCard("Pat Kat")
-                .setCardNumber("123123532")
-                .setCvcCode("123")
-                .setExpirationMonth("05")
-                .setExpirationYear("2028");
-        paymentPage.enterPaymentInformation(paymentData);
-        test.log(Status.PASS, "Fill Payment data and confirm order");
+            // Fill Payment data and confirm order
+            paymentData.setNameOnCard("Pat Kat")
+                    .setCardNumber("123123532")
+                    .setCvcCode("123")
+                    .setExpirationMonth("05")
+                    .setExpirationYear("2028");
+            paymentPage.enterPaymentInformation(paymentData);
+            test.log(Status.PASS, "Fill Payment data and confirm order");
 
-        // Verify success message
-        Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
+            // Verify success message
+            Assert.assertEquals(paymentPage.getSuccessOrderMessage().getText(), "Congratulations! Your order has been confirmed!");
 
-        // Click 'Delete Account' button
-        homePage.deleteAccount();
-        test.log(Status.PASS, "Click 'Delete Account' button");
+            // Click 'Delete Account' button
+            homePage.deleteAccount();
+            test.log(Status.PASS, "Click 'Delete Account' button");
 
-        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
-        DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
-
+            // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
+            DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
+            Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            throw e;
+        }
     }
 }

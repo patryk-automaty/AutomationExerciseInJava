@@ -3,6 +3,7 @@ package pl.automaty.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
+import pl.automaty.model.PaymentData;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.AccountCreatedPage;
 import pl.automaty.pages.HomePage;
@@ -20,7 +21,7 @@ public class TestDataGenerator {
     private WebDriver driver;
 
     // Method to generate random test data using Faker
-    public static SignUpData generateTestData() {
+    public static SignUpData generateSignUpTestData() {
         Faker faker = new Faker();
         List<String> countries = List.of("India", "Canada", "United States", "Australia", "Israel", "New Zealand", "Singapore");
         Random random = new Random();
@@ -53,6 +54,14 @@ public class TestDataGenerator {
         return signUpData;
     }
 
+    public static PaymentData generatePaymentTestData() {
+        Faker faker = new Faker();
+        PaymentData paymentData = new PaymentData();
+        paymentData.setNameOnCard(faker.name().firstName() + faker.name().lastName());
+        return paymentData;
+
+    }
+
     // Method to save generated test data to JSON
     public static void saveTestData(SignUpData signUpData) {
         ObjectMapper objectMapper = new ObjectMapper();
@@ -82,7 +91,7 @@ public class TestDataGenerator {
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
 
         // Generate and save test data
-        SignUpData signUpData = TestDataGenerator.generateTestData();
+        SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
         TestDataGenerator.saveTestData(signUpData);
 
         // Load test data from JSON

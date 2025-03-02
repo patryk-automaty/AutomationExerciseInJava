@@ -31,7 +31,7 @@ public class RegisterTest extends BaseTest {
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
 
         // Generate and save test data
-        SignUpData signUpData = TestDataGenerator.generateTestData();
+        SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
         TestDataGenerator.saveTestData(signUpData);
 
         // Load test data from JSON
