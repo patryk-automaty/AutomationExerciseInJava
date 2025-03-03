@@ -8,6 +8,7 @@ import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.*;
+import pl.automaty.utils.SeleniumHelper;
 import pl.automaty.utils.TestDataGenerator;
 
 import java.io.File;
@@ -46,54 +47,54 @@ public class RegisterTest extends BaseTest {
             // Open home page and navigate to login page
             homePage.consentCookies()
                     .openSignInAndLoginPage();
-            test.log(Status.PASS, "Opened home page and navigated to login page");
+            test.log(Status.PASS, "Opened home page and navigated to login page", SeleniumHelper.getScreenshot(driver));
 
             // Sign up new user with generated test data
             loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
-            test.log(Status.PASS, "Entered sign-up details");
+            test.log(Status.PASS, "Entered sign-up details", SeleniumHelper.getScreenshot(driver));
 
             // Verify 'ENTER ACCOUNT INFORMATION' text is displayed
             String actualAccountInformationText = signUpPage.getEnterAccountInformationText();
             Assert.assertEquals(actualAccountInformationText, expectedAccountInformationText);
-            test.log(Status.PASS, "Verified account information section is visible");
+            test.log(Status.PASS, "Verified account information section is visible", SeleniumHelper.getScreenshot(driver));
 
             // Fill in account information using loaded test data
             signUpPage.EnterAccountInformation(loadedData);
-            test.log(Status.PASS, "Entered account information");
+            test.log(Status.PASS, "Entered account information", SeleniumHelper.getScreenshot(driver));
 
             // Fill in address information
             signUpPage.EnterAddressInformation(loadedData);
-            test.log(Status.PASS, "Entered address information");
+            test.log(Status.PASS, "Entered address information", SeleniumHelper.getScreenshot(driver));
 
             // Verify 'ACCOUNT CREATED!' text is displayed
             String actualAccountCreatedText = accountCreatedPage.getAccountCreatedText();
             Assert.assertEquals(actualAccountCreatedText, expectedAccountCreatedText);
-            test.log(Status.PASS, "Verified account was created successfully");
+            test.log(Status.PASS, "Verified account was created successfully", SeleniumHelper.getScreenshot(driver));
 
             // Click 'Continue' button
             accountCreatedPage.clickContinue();
-            test.log(Status.PASS, "Clicked 'Continue' button");
+            test.log(Status.PASS, "Clicked 'Continue' button", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the user is logged in
             String loggedInMessage = homePage.loggedUserText();
             Assert.assertTrue(loggedInMessage.contains("Logged in as"),
                     "Expected 'Logged in as' message to be visible. Actual message: " + loggedInMessage);
-            test.log(Status.PASS, "Verified that the user is logged in: '" + loggedInMessage + "'");
+            test.log(Status.PASS, "Verified that the user is logged in: '" + loggedInMessage + "'", SeleniumHelper.getScreenshot(driver));
 
             // Click 'Delete Account' button
             homePage.deleteAccount();
-            test.log(Status.PASS, "Clicked 'Delete Account' button");
+            test.log(Status.PASS, "Clicked 'Delete Account' button", SeleniumHelper.getScreenshot(driver));
 
             // Verify 'ACCOUNT DELETED!' message is displayed
             String actualDeletedMessage = deleteAccountPage.getAccountDeletedText();
             Assert.assertEquals(actualDeletedMessage, expectedDeletedMessage,
                     "Expected account deletion message: '" + expectedDeletedMessage + "'. Actual message:'" + actualDeletedMessage + "'");
-            test.log(Status.PASS, "Verified account deletion message: '" + actualDeletedMessage + "'");
+            test.log(Status.PASS, "Verified account deletion message: '" + actualDeletedMessage + "'", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
         }
     }
 
@@ -135,21 +136,21 @@ public class RegisterTest extends BaseTest {
             // Open home page and navigate to login page
             homePage.consentCookies()
                     .openSignInAndLoginPage();
-            test.log(Status.PASS, "Navigated to login page from home page");
+            test.log(Status.PASS, "Navigated to login page from home page", SeleniumHelper.getScreenshot(driver));
 
             // Attempt to sign up with an existing email
             loginPage.SignUpUser(existUserName, existAccountEmail);
-            test.log(Status.PASS, "Attempted to sign up with existing email: " + existAccountEmail);
+            test.log(Status.PASS, "Attempted to sign up with existing email: " + existAccountEmail, SeleniumHelper.getScreenshot(driver));
 
             // Verify error message is displayed
             String actualErrorMessage = signUpPage.getExistEmailText();
             Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
-            test.log(Status.PASS, "Verified error message for existing email: '" + actualErrorMessage + "'");
+            test.log(Status.PASS, "Verified error message for existing email: '" + actualErrorMessage + "'", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }

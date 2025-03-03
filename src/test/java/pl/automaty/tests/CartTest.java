@@ -12,6 +12,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.Random;
 import org.openqa.selenium.support.ui.WebDriverWait;
+import pl.automaty.utils.SeleniumHelper;
 
 public class CartTest extends BaseTest {
 
@@ -91,7 +92,7 @@ public class CartTest extends BaseTest {
         try {
             // Accept cookies
             homePage.consentCookies();
-            test.log(Status.PASS, "Accepted cookies");
+            test.log(Status.PASS, "Accepted cookies", SeleniumHelper.getScreenshot(driver));
 
             // Choose random product
             List<WebElement> productsList = homePage.getProductList();
@@ -99,7 +100,7 @@ public class CartTest extends BaseTest {
             Random randomNumber = new Random();
             int randomProduct = randomNumber.nextInt(sizeProductList);
             homePage.viewProductList().get(randomProduct).click();
-            test.log(Status.PASS, "Chosen random product");
+            test.log(Status.PASS, "Chosen random product", SeleniumHelper.getScreenshot(driver));
 
             // Increase quantity to 4
             int quantity = 4;
@@ -107,18 +108,19 @@ public class CartTest extends BaseTest {
                     .inputQuantityNumber(quantity)
                     .addToCard()
                     .viewCart();
-            test.log(Status.PASS, "Increased quantity to 4");
+            test.log(Status.PASS, "Increased quantity to 4", SeleniumHelper.getScreenshot(driver));
 
             // Verify that product is displayed in cart page with exact quantity
             String quantityOnCartPageString = cartPage.getProductsQuantity().get(0).getText();
             int quantityOnCartPageInt = Integer.parseInt(quantityOnCartPageString);
             Assert.assertEquals(quantityOnCartPageInt, quantity);
-            test.log(Status.PASS, "Verified that product is displayed in cart page with exact quantity");
+            test.log(Status.PASS, "Verified that product is displayed in cart page with exact quantity",
+                    SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }
@@ -138,25 +140,26 @@ public class CartTest extends BaseTest {
                     .addProductToCart(1)
                     .continueShopping()
                     .viewCart();
-            test.log(Status.PASS, "Add products to cart, navigate to cart page and click proceedToCheckout page");
+            test.log(Status.PASS, "Added products to cart, navigated to cart page and clicked proceedToCheckout page",
+                    SeleniumHelper.getScreenshot(driver));
             // Get the number of products before deletion
             int productCountBefore = cartPage.getNumberOfProducts();
 
             // Delete the first product from the cart
             cartPage.deleteProduct(0);
             wait.until(driver -> cartPage.getNumberOfProducts() == productCountBefore - 1);
-            test.log(Status.PASS, "Delete the first product from the cart");
+            test.log(Status.PASS, "Delete the first product from the cart", SeleniumHelper.getScreenshot(driver));
             // Get the number of products after deletion
             int productCountAfter = cartPage.getNumberOfProducts();
 
             // Assert that the product count has decreased by one
             Assert.assertEquals(productCountAfter, productCountBefore - 1);
-            test.log(Status.PASS, "Product count has decreased by one");
+            test.log(Status.PASS, "Product count has decreased by one", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }

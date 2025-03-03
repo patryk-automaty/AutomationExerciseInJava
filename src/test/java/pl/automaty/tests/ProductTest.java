@@ -11,6 +11,7 @@ import pl.automaty.pages.CheckoutPage;
 import pl.automaty.pages.HomePage;
 import pl.automaty.pages.PaymentPage;
 import pl.automaty.pages.ProductsPage;
+import pl.automaty.utils.SeleniumHelper;
 
 import java.time.Duration;
 import java.util.List;
@@ -29,14 +30,14 @@ public class ProductTest extends BaseTest {
             // Accept cookies, navigate to the product page
             homePage.consentCookies()
                     .productNavBar();
-            test.log(Status.PASS, "Accepted cookies and navigated to the product page");
+            test.log(Status.PASS, "Accepted cookies and navigated to the product page", SeleniumHelper.getScreenshot(driver));
 
             // Verify that products list is visible
             Assert.assertTrue(productsPage.isProductListVisible());
-            test.log(Status.PASS, "Verified that products list is visible");
+            test.log(Status.PASS, "Verified that products list is visible", SeleniumHelper.getScreenshot(driver));
 
             productsPage.clickItem(0);
-            test.log(Status.PASS, "Clicked the first item on the list");
+            test.log(Status.PASS, "Clicked the first item on the list", SeleniumHelper.getScreenshot(driver));
 
             // Verify that details is visible: product name, category, price, availability, condition, brand
             Assert.assertTrue(productsPage.getProductName().isDisplayed());
@@ -45,12 +46,13 @@ public class ProductTest extends BaseTest {
             Assert.assertTrue(productsPage.getProductAvailability().isDisplayed());
             Assert.assertTrue(productsPage.getProductCondition().isDisplayed());
             Assert.assertTrue(productsPage.getProductBrand().isDisplayed());
-            test.log(Status.PASS, "Verify that details is visible: product name, category, price, availability, condition, brand");
+            test.log(Status.PASS, "Verify that details is visible: product name, category, price, availability, condition, brand",
+                    SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }
@@ -70,15 +72,15 @@ public class ProductTest extends BaseTest {
             // Accept cookies, navigate to the product page
             homePage.consentCookies()
                     .productNavBar();
-            test.log(Status.PASS, "Accepted cookies and navigate to the product page");
+            test.log(Status.PASS, "Accepted cookies and navigate to the product page", SeleniumHelper.getScreenshot(driver));
 
             // Enter product name in search input and click search button
             productsPage.searchProduct(searchProductName);
-            test.log(Status.PASS, "Entered product name in search input and clicked search button");
+            test.log(Status.PASS, "Entered product name in search input and clicked search button", SeleniumHelper.getScreenshot(driver));
 
             // Verify 'SEARCHED PRODUCTS' is visible
             Assert.assertTrue(productsPage.getSearchedProductsHeader().isDisplayed());
-            test.log(Status.PASS, "Verified 'SEARCHED PRODUCTS' is visible");
+            test.log(Status.PASS, "Verified 'SEARCHED PRODUCTS' is visible", SeleniumHelper.getScreenshot(driver));
 
             // Get all product names to the list
             List<String> searchedProductTitles = productsPage.getProductListTexts();
@@ -109,12 +111,12 @@ public class ProductTest extends BaseTest {
 
             // Final assertion - If assertion find error, assertion will fail
             softAssert.assertAll();
-            test.log(Status.PASS, "Iterate through all product titles and check if they contain the keyword");
+            test.log(Status.PASS, "Iterate through all product titles and check if they contain the keyword", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
         }
     }
 
@@ -127,7 +129,7 @@ public class ProductTest extends BaseTest {
         try {
             // Accept cookies
             homePage.consentCookies();
-            test.log(Status.PASS, "Accept cookies");
+            test.log(Status.PASS, "Accept cookies", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the category section is visible
             Assert.assertEquals(homePage.getSideCategoryHeader(), "Category".toUpperCase());
@@ -135,7 +137,7 @@ public class ProductTest extends BaseTest {
             // Click on 'Women' category and choose Dress
             homePage.chooseWomenCategory();
             homePage.clickOnWomenCategory("Dress");
-            test.log(Status.PASS, "Click on 'Women' category and choose Dress");
+            test.log(Status.PASS, "Click on 'Women' category and choose Dress", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the category section is visible
             Assert.assertEquals(homePage.getCategoryHeader(), "Women - Dress Products".toUpperCase());
@@ -143,12 +145,12 @@ public class ProductTest extends BaseTest {
             //  On left sidebar, click on any sub-category link of 'Men' category
             homePage.chooseMenCategory();
             homePage.clickOnMenCategory("Jeans");
-            test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar");
+            test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }

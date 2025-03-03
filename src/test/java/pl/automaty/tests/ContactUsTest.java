@@ -7,6 +7,7 @@ import org.testng.annotations.Test;
 import pl.automaty.model.ContactUsData;
 import pl.automaty.pages.ContactUsPage;
 import pl.automaty.pages.HomePage;
+import pl.automaty.utils.SeleniumHelper;
 
 public class ContactUsTest extends BaseTest {
 
@@ -25,7 +26,7 @@ public class ContactUsTest extends BaseTest {
             // Open 'contact us' form page
             homePage.consentCookies()
                     .contactUs();
-            test.log(Status.PASS, "Open 'contact us' form page");
+            test.log(Status.PASS, "Open 'contact us' form page", SeleniumHelper.getScreenshot(driver));
             // Verify 'GET IN TOUCH' is visible
             Assert.assertTrue(contactUsPage.getGetInTouchText().contains("GET IN TOUCH"));
             contactUsData.setName("Pat")
@@ -41,7 +42,7 @@ public class ContactUsTest extends BaseTest {
                     .uploadFile(PATH)
                     .clickSubmit()
                     .acceptAlert();
-            test.log(Status.PASS, "Submit the contact form");
+            test.log(Status.PASS, "Submit the contact form", SeleniumHelper.getScreenshot(driver));
             // Verify that the success message after form submission is as expected
             Assert.assertEquals(contactUsPage.successMessageText(), "Success! Your details have been submitted successfully.");
 
@@ -49,10 +50,10 @@ public class ContactUsTest extends BaseTest {
             contactUsPage.clickHome();
             test.log(Status.PASS, "Navigate back to the Home page.");
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
         }
     }
 }

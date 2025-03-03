@@ -9,6 +9,7 @@ import org.testng.annotations.Test;
 import pl.automaty.pages.DeleteAccountPage;
 import pl.automaty.pages.HomePage;
 import pl.automaty.pages.LoginPage;
+import pl.automaty.utils.SeleniumHelper;
 
 
 public class LoginTest extends BaseTest {
@@ -87,26 +88,26 @@ public class LoginTest extends BaseTest {
             // Accept cookies, navigate to the sign-in page
             homePage.consentCookies()
                     .openSignInAndLoginPage();
-            test.log(Status.PASS, "Accept cookies, navigate to the sign-in page");
+            test.log(Status.PASS, "Accept cookies, navigate to the sign-in page", SeleniumHelper.getScreenshot(driver));
 
             // Verify that "Login to your account" is visible
             Assert.assertEquals(loginPage.getLoginText(), "Login to your account");
 
             // Log in with the correct credentials
             loginPage.loginToAccount("existUser1312311@tests.com", "Test123");
-            test.log(Status.PASS, "Log in with the correct credentials");
+            test.log(Status.PASS, "Log in with the correct credentials", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the logged-in user text contains "Logged in as"
             Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
 
             // Logout from account
             homePage.logoutAccount();
-            test.log(Status.PASS, "Logout from account");
+            test.log(Status.PASS, "Logout from account", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }
