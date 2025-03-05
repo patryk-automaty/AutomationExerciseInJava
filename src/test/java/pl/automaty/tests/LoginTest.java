@@ -2,14 +2,14 @@ package pl.automaty.tests;
 
 import com.aventstack.extentreports.ExtentTest;
 import com.aventstack.extentreports.Status;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 import org.testng.annotations.Test;
+import pl.automaty.model.SignUpData;
 import pl.automaty.pages.DeleteAccountPage;
 import pl.automaty.pages.HomePage;
 import pl.automaty.pages.LoginPage;
 import pl.automaty.utils.SeleniumHelper;
+import pl.automaty.utils.TestDataGenerator;
 
 
 public class LoginTest extends BaseTest {
@@ -23,30 +23,35 @@ public class LoginTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         ExtentTest test = extentReports.createTest("Login User with correct email and password");
+
+        // Register a new user and get the credentials
+        SignUpData registerNewUser = TestDataGenerator.registerNewUser(driver);
+
         try {
-            // Accept cookies, navigate to the sign-in page and log in with the provided credentials
-            homePage.consentCookies()
-                    .openSignInAndLoginPage()
-                    .loginToAccount("testCorrectUser1993@testCorrectUser1993.com", "Test123!");
-            test.log(Status.PASS, "Accept cookies, navigate to the sign-in page and log in with the provided credentials");
+            // Navigate to the sign-in page and log in with the provided credentials
+            homePage.openSignInAndLoginPage()
+                    .loginToAccount(registerNewUser.getEmail(), registerNewUser.getPassword());
+            test.log(Status.PASS, "Accepted cookies, navigate to the sign-in page and log in with the provided credentials",
+                    SeleniumHelper.getScreenshot(driver));
 
             // Verify that the logged-in user text contains "Logged in as"
             Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
+            test.log(Status.PASS, "Verified successful login", SeleniumHelper.getScreenshot(driver));
 
             // Delete account
             homePage.deleteAccount();
-            test.log(Status.PASS, "Delete account");
+            test.log(Status.PASS, "Deleted account");
             // Verify that confirmation message contains "ACCOUNT DELETED!".
             Assert.assertTrue(deleteAccountPage.getAccountDeletedText().contains("ACCOUNT DELETED!"));
 
             // Click the continue button
             deleteAccountPage.clickContinue();
-            test.log(Status.PASS, "Click the continue button");
+            test.log(Status.PASS, "Clicked the continue button", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }

@@ -3,12 +3,14 @@ package pl.automaty.utils;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
 import org.openqa.selenium.WebDriver;
+import org.testng.annotations.Test;
 import pl.automaty.model.PaymentData;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.AccountCreatedPage;
 import pl.automaty.pages.HomePage;
 import pl.automaty.pages.LoginPage;
 import pl.automaty.pages.SignUpPage;
+import pl.automaty.tests.BaseTest;
 
 import java.io.File;
 import java.io.IOException;
@@ -82,37 +84,42 @@ public class TestDataGenerator {
             return null;
         }
     }
-    public void RegisterUser() {
 
-        // Create instances
+    public static SignUpData registerNewUser(WebDriver driver) {
+        // Create instances of page objects
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
         SignUpPage signUpPage = new SignUpPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
 
-        // Generate and save test data
-        SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
-        TestDataGenerator.saveTestData(signUpData);
-
-        // Load test data from JSON
-        SignUpData loadedData = TestDataGenerator.loadTestData();
+        // Generate new user test data
+        SignUpData signUpData = generateSignUpTestData();
+        saveTestData(signUpData);  // Save test data for later use
 
         // Open home page and navigate to login page
         homePage.consentCookies()
                 .openSignInAndLoginPage();
 
-        // Sign up new user with generated test data
-        loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
+        // Sign up with generated test data
+        loginPage.SignUpUser(signUpData.getUsername(), signUpData.getEmail());
 
-        // Fill in account information using loaded test data
-        signUpPage.EnterAccountInformation(loadedData);
+        // Fill in account information
+        signUpPage.EnterAccountInformation(signUpData);
 
         // Fill in address information
-        signUpPage.EnterAddressInformation(loadedData);
+        signUpPage.EnterAddressInformation(signUpData);
 
-        // Click 'Continue' button
+        // Click 'Continue' button after account creation
         accountCreatedPage.clickContinue();
 
+        //Logout from account
+        homePage.logoutAccount();
+
+        // Back to home page
+        homePage.backToHomePage();
+
+        // Return the registered user data
+        return signUpData;
     }
 
 }

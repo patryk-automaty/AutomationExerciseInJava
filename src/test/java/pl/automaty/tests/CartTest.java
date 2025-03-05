@@ -19,7 +19,7 @@ public class CartTest extends BaseTest {
     // TC 12
     @Test
     public void viewCartTest() {
-        // Create instances for pages and reproting
+        // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
         CartPage cartPage = new CartPage(driver);
         ProductsPage productsPage = new ProductsPage(driver);
@@ -28,7 +28,7 @@ public class CartTest extends BaseTest {
             // Accept cookies and navigate to the product section
             homePage.consentCookies()
                     .productNavBar();
-            test.log(Status.PASS, "Accepted cookies and navigated to the product section");
+            test.log(Status.PASS, "Accepted cookies and navigated to the product section", SeleniumHelper.getScreenshot(driver));
             // Add the first and the second products to the cart and redirect to cart page
             productsPage.clickAddToCart(0)
                     .continueShopping()
@@ -71,12 +71,12 @@ public class CartTest extends BaseTest {
 
             // Soft assertion - test execution will continue even if this assertion fails
             softAssert.assertAll();
-            test.log(Status.PASS, "Iterated over the lists to check the visibility of each product details");
+            test.log(Status.PASS, "All product details are displayed correctly");
         } catch (AssertionError e) {
-            test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         } catch (Exception e) {
-            test.log(Status.FAIL, "Test execution failed: " + e.getMessage());
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;
         }
     }
@@ -127,11 +127,12 @@ public class CartTest extends BaseTest {
 
     @Test
     public void removeProductsFromCartTest() {
+
         // Create instances
         HomePage homePage = new HomePage(driver);
         CartPage cartPage = new CartPage(driver);
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
-        ExtentTest test = extentReports.createTest("Remove products from cart");
+        ExtentTest test = extentReports.createTest("Removed products from cart");
         try {
             // Add products to cart, navigate to cart page and click proceedToCheckout page
             homePage.consentCookies()
@@ -148,7 +149,7 @@ public class CartTest extends BaseTest {
             // Delete the first product from the cart
             cartPage.deleteProduct(0);
             wait.until(driver -> cartPage.getNumberOfProducts() == productCountBefore - 1);
-            test.log(Status.PASS, "Delete the first product from the cart", SeleniumHelper.getScreenshot(driver));
+            test.log(Status.PASS, "Deleted the first product from the cart", SeleniumHelper.getScreenshot(driver));
             // Get the number of products after deletion
             int productCountAfter = cartPage.getNumberOfProducts();
 

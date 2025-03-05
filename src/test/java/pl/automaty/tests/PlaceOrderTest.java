@@ -141,54 +141,47 @@ public class PlaceOrderTest extends BaseTest {
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
         ExtentTest test = extentReports.createTest("Place Order: Register before Checkout");
 
+        // Generate and save test data
+        SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
+        TestDataGenerator.saveTestData(signUpData);
+
+        // Load test data from JSON
+        SignUpData loadedData = TestDataGenerator.loadTestData();
+
+        // Define expected results
+        String expectedAccountInformationText = "ENTER ACCOUNT INFORMATION";
+        String expectedAccountCreatedText = "ACCOUNT CREATED!";
+
         try {
             // Accept cookies and navigate to login page
             homePage.consentCookies()
                     .openSignInAndLoginPage();
             test.log(Status.PASS, "Accept cookies and navigate to login page", SeleniumHelper.getScreenshot(driver));
-            // Sign up new user
-            loginPage.SignUpUser("janusz", "ja112nusmai@l123123.com");
+            // Sign up new user with generated test data
+            loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
+            test.log(Status.PASS, "Entered sign-up details", SeleniumHelper.getScreenshot(driver));
 
-            // Account information data
-            SignUpData signUpData = new SignUpData();
-            signUpData.setGender("Mr");
-            signUpData.setName("Pat");
-            signUpData.setPassword("Test123");
-            signUpData.setBirthDay("11");
-            signUpData.setBirthMonth("3");
-            signUpData.setBirthYear("2000");
-            signUpData.setNewsletter(Boolean.TRUE);
-            signUpData.setOffer(Boolean.TRUE);
+            // Verify 'ENTER ACCOUNT INFORMATION' text is displayed
+            String actualAccountInformationText = signUpPage.getEnterAccountInformationText();
+            Assert.assertEquals(actualAccountInformationText, expectedAccountInformationText);
+            test.log(Status.PASS, "Verified account information section is visible", SeleniumHelper.getScreenshot(driver));
 
-            // Address information data
-            signUpData.setFirstName("Pat");
-            signUpData.setLastName("Kat");
-            signUpData.setCompany("Januszex");
-            signUpData.setAddress1("Random Address");
-            signUpData.setAddress2("Continue random address 3/15");
-            signUpData.setCountry("Canada");
-            signUpData.setState("Mazovia");
-            signUpData.setCity("Warsaw");
-            signUpData.setZipcode("00-000 Warsaw");
-            signUpData.setMobileNumber("123123123");
+            // Fill in account information using loaded test data
+            signUpPage.EnterAccountInformation(loadedData);
+            test.log(Status.PASS, "Entered account information", SeleniumHelper.getScreenshot(driver));
 
-            // Verify that 'ENTER ACCOUNT INFORMATION' is visible
-            Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            // Fill in address information
+            signUpPage.EnterAddressInformation(loadedData);
+            test.log(Status.PASS, "Entered address information", SeleniumHelper.getScreenshot(driver));
 
-            // Fill account information
-            signUpPage.EnterAccountInformation(signUpData);
-            test.log(Status.PASS, "Fill account information", SeleniumHelper.getScreenshot(driver));
-
-            // Fill address information
-            signUpPage.EnterAddressInformation(signUpData);
-            test.log(Status.PASS, "Fill address information", SeleniumHelper.getScreenshot(driver));
-
-            // Verify that 'ACCOUNT CREATED!' is visible
-            Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
+            // Verify 'ACCOUNT CREATED!' text is displayed
+            String actualAccountCreatedText = accountCreatedPage.getAccountCreatedText();
+            Assert.assertEquals(actualAccountCreatedText, expectedAccountCreatedText);
+            test.log(Status.PASS, "Verified account was created successfully", SeleniumHelper.getScreenshot(driver));
 
             // Click 'Continue' button
             accountCreatedPage.clickContinue();
-            test.log(Status.PASS, "Click 'Continue' button", SeleniumHelper.getScreenshot(driver));
+            test.log(Status.PASS, "Clicked 'Continue' button", SeleniumHelper.getScreenshot(driver));
 
             // Add products to cart, navigate to cart page and click proceed to checkout button
             homePage.addProductToCart(0)
