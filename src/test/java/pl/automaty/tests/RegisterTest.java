@@ -1,148 +1,157 @@
 package pl.automaty.tests;
 
+import com.aventstack.extentreports.ExtentTest;
+import com.aventstack.extentreports.Status;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.testng.Assert;
 import org.testng.annotations.Test;
 import pl.automaty.model.SignUpData;
 import pl.automaty.pages.*;
+import pl.automaty.utils.SeleniumHelper;
+import pl.automaty.utils.TestDataGenerator;
+
+import java.io.File;
+import java.io.IOException;
+
 
 public class RegisterTest extends BaseTest {
 
-    // Test Case 1
+    // TC 1
     @Test
     public void RegisterUserTest() {
 
-        // Account information data
-        SignUpData signUpData = new SignUpData();
-        signUpData.setGender("Mr");
-        signUpData.setName("Pat");
-        signUpData.setPassword("Test123");
-        signUpData.setBirthDay("11");
-        signUpData.setBirthMonth("3");
-        signUpData.setBirthYear("2000");
-        signUpData.setNewsletter(Boolean.TRUE);
-        signUpData.setOffer(Boolean.TRUE);
+        // Create instance for reporting
+        ExtentTest test = extentReports.createTest("Register User");
 
-        // Address information data
-        signUpData.setFirstName("Pat");
-        signUpData.setLastName("Kat");
-        signUpData.setCompany("Januszex");
-        signUpData.setAddress1("Random Address");
-        signUpData.setAddress2("Continue random address 3/15");
-        signUpData.setCountry("Canada");
-        signUpData.setState("Mazovia");
-        signUpData.setCity("Warsaw");
-        signUpData.setZipcode("00-000 Warsaw");
-        signUpData.setMobileNumber("123123123");
-
-        // Open home page and direct to login page
+        // Create instances for pages
         HomePage homePage = new HomePage(driver);
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
-
-        // sign up new user
         LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "exis1tUser1312311@tests.com");
-
-        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
         SignUpPage signUpPage = new SignUpPage(driver);
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
-
-        // Fill account information
-        signUpPage.EnterAccountInformation(signUpData);
-
-        // Fill address information
-        signUpPage.EnterAddressInformation(signUpData);
-
-        // Verify that 'ACCOUNT CREATED!' is visible
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
-
-        // Click 'Continue' button
-        accountCreatedPage.clickContinue();
-
-        // Verify that 'Logged in as username' is visible
-        Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
-
-        // Click 'Delete Account' button
-        homePage.deleteAccount();
-
-        // Verify that 'ACCOUNT DELETED!' is visible and click 'Continue' button
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
-        Assert.assertEquals(deleteAccountPage.getAccountDeletedText(), "ACCOUNT DELETED!");
+
+        // Generate and save test data
+        SignUpData signUpData = TestDataGenerator.generateSignUpTestData();
+        TestDataGenerator.saveTestData(signUpData);
+
+        // Load test data from JSON
+        SignUpData loadedData = TestDataGenerator.loadTestData();
+
+        // Define expected results
+        String expectedAccountInformationText = "ENTER ACCOUNT INFORMATION";
+        String expectedAccountCreatedText = "ACCOUNT CREATED!";
+        String expectedDeletedMessage = "ACCOUNT DELETED!";
+
+        try {
+            // Open home page and navigate to login page
+            homePage.consentCookies()
+                    .openSignInAndLoginPage();
+            test.log(Status.PASS, "Opened home page and navigated to login page", SeleniumHelper.getScreenshot(driver));
+
+            // Sign up new user with generated test data
+            loginPage.SignUpUser(loadedData.getUsername(), loadedData.getEmail());
+            test.log(Status.PASS, "Entered sign-up details", SeleniumHelper.getScreenshot(driver));
+
+            // Verify 'ENTER ACCOUNT INFORMATION' text is displayed
+            String actualAccountInformationText = signUpPage.getEnterAccountInformationText();
+            Assert.assertEquals(actualAccountInformationText, expectedAccountInformationText);
+            test.log(Status.PASS, "Verified account information section is visible", SeleniumHelper.getScreenshot(driver));
+
+            // Fill in account information using loaded test data
+            signUpPage.EnterAccountInformation(loadedData);
+            test.log(Status.PASS, "Entered account information", SeleniumHelper.getScreenshot(driver));
+
+            // Fill in address information
+            signUpPage.EnterAddressInformation(loadedData);
+            test.log(Status.PASS, "Entered address information", SeleniumHelper.getScreenshot(driver));
+
+            // Verify 'ACCOUNT CREATED!' text is displayed
+            String actualAccountCreatedText = accountCreatedPage.getAccountCreatedText();
+            Assert.assertEquals(actualAccountCreatedText, expectedAccountCreatedText);
+            test.log(Status.PASS, "Verified account was created successfully", SeleniumHelper.getScreenshot(driver));
+
+            // Click 'Continue' button
+            accountCreatedPage.clickContinue();
+            test.log(Status.PASS, "Clicked 'Continue' button", SeleniumHelper.getScreenshot(driver));
+
+            // Verify that the user is logged in
+            String loggedInMessage = homePage.loggedUserText();
+            Assert.assertTrue(loggedInMessage.contains("Logged in as"),
+                    "Expected 'Logged in as' message to be visible. Actual message: " + loggedInMessage);
+            test.log(Status.PASS, "Verified that the user is logged in: '" + loggedInMessage + "'", SeleniumHelper.getScreenshot(driver));
+
+            // Click 'Delete Account' button
+            homePage.deleteAccount();
+            test.log(Status.PASS, "Clicked 'Delete Account' button", SeleniumHelper.getScreenshot(driver));
+
+            // Verify 'ACCOUNT DELETED!' message is displayed
+            String actualDeletedMessage = deleteAccountPage.getAccountDeletedText();
+            Assert.assertEquals(actualDeletedMessage, expectedDeletedMessage,
+                    "Expected account deletion message: '" + expectedDeletedMessage + "'. Actual message:'" + actualDeletedMessage + "'");
+            test.log(Status.PASS, "Verified account deletion message: '" + actualDeletedMessage + "'", SeleniumHelper.getScreenshot(driver));
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
+        }
     }
 
 
-    // Test Case 5
+    // TC 5
     @Test
-    public void RegisterExistUserTest() {
+    public void RegisterExistUserTest() throws IOException {
 
-        // Create instances
+        // Define the data JSON file path
+        final String DATA_PATH = "src/test/java/pl/automaty/model/testData.json";
+
+        // Create instances for reporting and pages
         HomePage homePage = new HomePage(driver);
         SignUpPage signUpPage = new SignUpPage(driver);
         LoginPage loginPage = new LoginPage(driver);
+        TestDataGenerator testDataGenerator = new TestDataGenerator();
 
-        // Open home page and navigate to login page
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
+        // Create instance for reporting
+        ExtentTest test = extentReports.createTest("Register Existing User Test");
 
-        // Sign up new user with existing email
-        loginPage.SignUpUser("Pat", "existUser13123@tests.com");
-        Assert.assertEquals(signUpPage.getExistEmailText(), "Email Address already exist!");
+        // Create ObjectMapper instance
+        ObjectMapper objectMapper = new ObjectMapper();
 
-    }
+        // Define expected results
+        String expectedErrorMessage = "Email Address already exist!";
 
-    @Test
-    public void RegisterUserToTest() {
+        try {
+            // Register a new user and get the credentials
+            SignUpData registerNewUser = TestDataGenerator.registerNewUserAndLogout(driver);
 
-        // Account information data
-        SignUpData signUpData = new SignUpData();
-        signUpData.setGender("Mr");
-        signUpData.setName("Pat");
-        signUpData.setPassword("Test123");
-        signUpData.setBirthDay("11");
-        signUpData.setBirthMonth("3");
-        signUpData.setBirthYear("2000");
-        signUpData.setNewsletter(Boolean.TRUE);
-        signUpData.setOffer(Boolean.TRUE);
+            // Read JSON file as a tree (JsonNode)
+            JsonNode rootNode = objectMapper.readTree(new File(DATA_PATH));
 
-        // Address information data
-        signUpData.setFirstName("Pat");
-        signUpData.setLastName("Kat");
-        signUpData.setCompany("Januszex");
-        signUpData.setAddress1("Random Address");
-        signUpData.setAddress2("Continue random address 3/15");
-        signUpData.setCountry("Canada");
-        signUpData.setState("Mazovia");
-        signUpData.setCity("Warsaw");
-        signUpData.setZipcode("00-000 Warsaw");
-        signUpData.setMobileNumber("123123123");
+            // Extract specific value (email)
+            String existAccountEmail = rootNode.get("email").asText();
+            String existUserName = rootNode.get("username").asText();
 
-        // Open home page and direct to login page
-        HomePage homePage = new HomePage(driver);
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
 
-        // sign up new user
-        LoginPage loginPage = new LoginPage(driver);
-        loginPage.SignUpUser("Pat", "exis1tUser1312311@tests.com");
+            // Open home page and navigate to login page
+            homePage.openSignInAndLoginPage();
+            test.log(Status.PASS, "Navigated to login page from home page", SeleniumHelper.getScreenshot(driver));
 
-        // Verify that 'ENTER ACCOUNT INFORMATION' is visible
-        SignUpPage signUpPage = new SignUpPage(driver);
-        Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
+            // Attempt to sign up with an existing email
+            loginPage.SignUpUser(registerNewUser.getUsername(), registerNewUser.getEmail());
+            test.log(Status.PASS, "Attempted to sign up with existing email: " + registerNewUser.getEmail(), SeleniumHelper.getScreenshot(driver));
 
-        // Fill account information
-        signUpPage.EnterAccountInformation(signUpData);
-
-        // Fill address information
-        signUpPage.EnterAddressInformation(signUpData);
-
-        // Verify that 'ACCOUNT CREATED!' is visible
-        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
-        Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
-
-        // Click 'Continue' button
-        accountCreatedPage.clickContinue();
-
+            // Verify error message is displayed
+            String actualErrorMessage = signUpPage.getExistEmailText();
+            Assert.assertEquals(actualErrorMessage, expectedErrorMessage);
+            test.log(Status.PASS, "Verified error message for existing email: '" + actualErrorMessage + "'", SeleniumHelper.getScreenshot(driver));
+        } catch (AssertionError e) {
+            test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
+            throw e;
+        } catch (Exception e) {
+            test.log(Status.FAIL, "Test execution failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
+            throw e;
+        }
     }
 }
 

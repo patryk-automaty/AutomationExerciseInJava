@@ -39,3 +39,5 @@ build/
 /.idea/encodings.xml
 /.idea/misc.xml
 /.idea/vcs.xml
+/src/test/java/pl/automaty/exercise/
+/src/test/resources/

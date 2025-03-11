@@ -53,6 +53,9 @@ public class HomePage {
     @FindBy(xpath = "//a[contains(text(), 'Cart')]")
     private WebElement cartButton;
 
+    @FindBy(xpath = "//a[contains(text(), 'Home')]")
+    private WebElement homeButton;
+
     @FindBy(xpath = "//div[@class='productinfo text-center']//p")
     private List<WebElement> productList;
 
@@ -115,6 +118,11 @@ public class HomePage {
 
     public HomePage chooseMenCategory() {
         menCategory.click();
+        return this;
+    }
+
+    public HomePage backToHomePage() {
+        homeButton.click();
         return this;
     }
 
@@ -219,8 +227,8 @@ public class HomePage {
         return new ProductsPage(driver);
     }
 
-    public String subscriptionHeaderText() {
-        return subscriptionHeader.getText();
+    public WebElement subscriptionHeaderText() {
+        return subscriptionHeader;
     }
 
     public HomePage sendSubscriptionEmail(String email) {
