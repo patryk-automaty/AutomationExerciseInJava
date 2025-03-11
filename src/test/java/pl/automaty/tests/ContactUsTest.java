@@ -17,6 +17,17 @@ public class ContactUsTest extends BaseTest {
         // Define path to sample file
         final String PATH = "/home/patryk/IdeaProjects/AutomationExerciseInJava/src/test/java/pl/automaty/model/sample.txt";
 
+        // Define test data
+        String name = "Pat";
+        String email = "testemail123@test.com";
+        String subject = "Complaint Regarding Defective Laptop";
+        String message = "I am writing to formally submit a complaint regarding the [Laptop Model Name]," +
+                            " which I purchased on 2025/1/1 from Store." +
+                            " Unfortunately, I have encountered the following issue:" +
+                            "The screen has stopped working";
+
+        String expectedSuccessMessage = "Success! Your details have been submitted successfully.";
+
         // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
         ContactUsPage contactUsPage = new ContactUsPage(driver);
@@ -26,29 +37,28 @@ public class ContactUsTest extends BaseTest {
             // Open 'contact us' form page
             homePage.consentCookies()
                     .contactUs();
-            test.log(Status.PASS, "Open 'contact us' form page", SeleniumHelper.getScreenshot(driver));
+            test.log(Status.PASS, "Opened 'contact us' form page", SeleniumHelper.getScreenshot(driver));
             // Verify 'GET IN TOUCH' is visible
             Assert.assertTrue(contactUsPage.getGetInTouchText().contains("GET IN TOUCH"));
-            contactUsData.setName("Pat")
-                    .setEmail("testemail123@test.com")
-                    .setSubject("Complaint Regarding Defective Laptop ")
-                    .setMessage("I am writing to formally submit a complaint regarding the [Laptop Model Name]," +
-                            " which I purchased on 2025/1/1 from Store." +
-                            " Unfortunately, I have encountered the following issue:\n" +
-                            "The screen has stopped working");
+            test.log(Status.PASS, "Verified 'GET IN TOUCH' is visible", SeleniumHelper.getScreenshot(driver));
+            contactUsData.setName(name)
+                    .setEmail(email)
+                    .setSubject(subject)
+                    .setMessage(message);
 
             // Submit the contact form
             contactUsPage.setData(contactUsData)
                     .uploadFile(PATH)
                     .clickSubmit()
                     .acceptAlert();
-            test.log(Status.PASS, "Submit the contact form", SeleniumHelper.getScreenshot(driver));
+            test.log(Status.PASS, "Submitted the contact form", SeleniumHelper.getScreenshot(driver));
             // Verify that the success message after form submission is as expected
-            Assert.assertEquals(contactUsPage.successMessageText(), "Success! Your details have been submitted successfully.");
-
+            String actualSuccessMessage = contactUsPage.successMessageText();
+            Assert.assertEquals(actualSuccessMessage, expectedSuccessMessage);
+            test.log(Status.PASS, "Verified success message after form submission is as expected", SeleniumHelper.getScreenshot(driver));
             // Navigate back to the Home page.
             contactUsPage.clickHome();
-            test.log(Status.PASS, "Navigate back to the Home page.");
+            test.log(Status.PASS, "Navigated back to the Home page.");
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;

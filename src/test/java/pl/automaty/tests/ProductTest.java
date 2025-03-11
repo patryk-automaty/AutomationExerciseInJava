@@ -41,7 +41,7 @@ public class ProductTest extends BaseTest {
 
             // Verify that details is visible: product name, category, price, availability, condition, brand
             Assert.assertTrue(productsPage.getProductName().isDisplayed());
-            Assert.assertTrue(productsPage.getProductHeader().isDisplayed());
+            Assert.assertTrue(productsPage.getProductCategory().isDisplayed());
             Assert.assertTrue(productsPage.getProductPrice().isDisplayed());
             Assert.assertTrue(productsPage.getProductAvailability().isDisplayed());
             Assert.assertTrue(productsPage.getProductCondition().isDisplayed());
@@ -144,7 +144,7 @@ public class ProductTest extends BaseTest {
 
             //  On left sidebar, click on any sub-category link of 'Men' category
             homePage.chooseMenCategory();
-            homePage.clickOnMenCategory("Jeans");
+            homePage.clickOnMenCategory("Tshirts");
             test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar", SeleniumHelper.getScreenshot(driver));
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));

@@ -25,7 +25,7 @@ public class LoginTest extends BaseTest {
         ExtentTest test = extentReports.createTest("Login User with correct email and password");
 
         // Register a new user and get the credentials
-        SignUpData registerNewUser = TestDataGenerator.registerNewUser(driver);
+        SignUpData registerNewUser = TestDataGenerator.registerNewUserAndLogout(driver);
 
         try {
             // Navigate to the sign-in page and log in with the provided credentials
@@ -64,14 +64,21 @@ public class LoginTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
         ExtentTest test = extentReports.createTest("Login User with incorrect email and password");
+
+        // Define test data
+        String incorrectEmail = "testCorrectUser1993@testCorrectUser1993.com";
+        String incorrectPassword = "Test123!";
+        String expectedIncorrectLoginMessage = "Your email or password is incorrect!";
+
         try {
             // Accept cookies, navigate to the sign-in page and log in with the incorrect credentials
             homePage.consentCookies()
                     .openSignInAndLoginPage()
-                    .loginToAccount("testCorrectUser1993@testCorrectUser1993.com", "Test123!");
-            test.log(Status.PASS, "Accept cookies, navigate to the sign-in page and log in with the incorrect credentials");
+                    .loginToAccount(incorrectEmail, incorrectPassword);
+            test.log(Status.PASS, "Accepted cookies, navigate to the sign-in page and log in with the incorrect credentials");
             // Verify that the error message displayed
-            Assert.assertEquals(loginPage.getIncorrectLoginText(), "Your email or password is incorrect!");
+            String actualIncorrectLoginMessage = loginPage.getIncorrectLoginText();
+            Assert.assertEquals(actualIncorrectLoginMessage, expectedIncorrectLoginMessage);
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Assertion failed: " + e.getMessage());
             throw e;
@@ -89,6 +96,13 @@ public class LoginTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
         ExtentTest test = extentReports.createTest("Logout User");
+
+        // Define test data
+        String existEmail = "existUser1312311@tests.com";
+        String existPassword = "Test123";
+
+
+
         try {
             // Accept cookies, navigate to the sign-in page
             homePage.consentCookies()
@@ -99,7 +113,7 @@ public class LoginTest extends BaseTest {
             Assert.assertEquals(loginPage.getLoginText(), "Login to your account");
 
             // Log in with the correct credentials
-            loginPage.loginToAccount("existUser1312311@tests.com", "Test123");
+            loginPage.loginToAccount(existEmail, existPassword);
             test.log(Status.PASS, "Log in with the correct credentials", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the logged-in user text contains "Logged in as"

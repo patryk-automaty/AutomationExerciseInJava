@@ -27,6 +27,9 @@ public class PlaceOrderTest extends BaseTest {
         ExtentTest test = extentReports.createTest("Place Order: Register while Checkout");
         DeleteAccountPage deleteAccountPage = new DeleteAccountPage(driver);
 
+
+
+
         try {
             // Add products to cart and navigate to cart page
             homePage.consentCookies()
@@ -46,12 +49,13 @@ public class PlaceOrderTest extends BaseTest {
             TestDataGenerator.saveTestData(signUpData);
 
             // Sign up new user
-            loginPage.SignUpUser(signUpData.getName(), signUpData.getEmail());
-            test.log(Status.PASS, "Signed up new user");
+            loginPage.SignUpUser(signUpData.getUsername(), signUpData.getEmail());
+            test.log(Status.PASS, "Signed up new user", SeleniumHelper.getScreenshot(driver));
 
             // Verify that 'ENTER ACCOUNT INFORMATION' is visible
             Assert.assertEquals(signUpPage.getEnterAccountInformationText(), "ENTER ACCOUNT INFORMATION");
             test.log(Status.PASS, "Verified that 'ENTER ACCOUNT INFORMATION' is visible", SeleniumHelper.getScreenshot(driver));
+
             // Load test data from JSON
             SignUpData loadedData = TestDataGenerator.loadTestData();
 
@@ -63,21 +67,14 @@ public class PlaceOrderTest extends BaseTest {
             signUpPage.EnterAddressInformation(loadedData);
             test.log(Status.PASS, "Entered address information", SeleniumHelper.getScreenshot(driver));
 
-            // Fill account information
-            signUpPage.EnterAccountInformation(signUpData);
-            test.log(Status.PASS, "Filled account information", SeleniumHelper.getScreenshot(driver));
-
-            // Fill address information
-            signUpPage.EnterAddressInformation(signUpData);
-            test.log(Status.PASS, "Filled address information", SeleniumHelper.getScreenshot(driver));
 
             // Verify that 'ACCOUNT CREATED!' is visible
             Assert.assertEquals(accountCreatedPage.getAccountCreatedText(), "ACCOUNT CREATED!");
             test.log(Status.PASS, "Verified that 'ACCOUNT CREATED!' is visible", SeleniumHelper.getScreenshot(driver));
 
             // Click 'Continue' button
-            accountCreatedPage.clickContinue();
-            test.log(Status.PASS, "Clicked 'Continue' button", SeleniumHelper.getScreenshot(driver));
+           accountCreatedPage.clickContinue();
+           test.log(Status.PASS, "Clicked 'Continue' button", SeleniumHelper.getScreenshot(driver));
 
             // Verify that 'Logged in as username' is visible
             Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));
@@ -239,12 +236,15 @@ public class PlaceOrderTest extends BaseTest {
         PaymentPage paymentPage = new PaymentPage(driver);
         ExtentTest test = extentReports.createTest("Remove Products From Cart");
 
+        // Register a new user and get the credentials
+        SignUpData registerNewUser = TestDataGenerator.registerNewUserAndLogout(driver);
+
+
         try {
-            // Accept cookies and navigate to login page
-            homePage.consentCookies()
-                    .openSignInAndLoginPage()
-                    .loginToAccount("exis1tUser1312311@tests.com", "Test123");
-            test.log(Status.PASS, "Accept cookies and navigate to login page", SeleniumHelper.getScreenshot(driver));
+            // Navigate to login page
+            homePage.openSignInAndLoginPage()
+                    .loginToAccount(registerNewUser.getEmail(), registerNewUser.getPassword());
+            test.log(Status.PASS, "Navigated to login page", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the logged-in user text contains "Logged in as"
             Assert.assertTrue(homePage.loggedUserText().contains("Logged in as"));

@@ -122,8 +122,8 @@ public class RegisterTest extends BaseTest {
         String expectedErrorMessage = "Email Address already exist!";
 
         try {
-            // Create new user
-            testDataGenerator.RegisterUser();
+            // Register a new user and get the credentials
+            SignUpData registerNewUser = TestDataGenerator.registerNewUserAndLogout(driver);
 
             // Read JSON file as a tree (JsonNode)
             JsonNode rootNode = objectMapper.readTree(new File(DATA_PATH));
@@ -134,13 +134,12 @@ public class RegisterTest extends BaseTest {
 
 
             // Open home page and navigate to login page
-            homePage.consentCookies()
-                    .openSignInAndLoginPage();
+            homePage.openSignInAndLoginPage();
             test.log(Status.PASS, "Navigated to login page from home page", SeleniumHelper.getScreenshot(driver));
 
             // Attempt to sign up with an existing email
-            loginPage.SignUpUser(existUserName, existAccountEmail);
-            test.log(Status.PASS, "Attempted to sign up with existing email: " + existAccountEmail, SeleniumHelper.getScreenshot(driver));
+            loginPage.SignUpUser(registerNewUser.getUsername(), registerNewUser.getEmail());
+            test.log(Status.PASS, "Attempted to sign up with existing email: " + registerNewUser.getEmail(), SeleniumHelper.getScreenshot(driver));
 
             // Verify error message is displayed
             String actualErrorMessage = signUpPage.getExistEmailText();

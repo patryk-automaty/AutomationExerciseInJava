@@ -85,7 +85,7 @@ public class TestDataGenerator {
         }
     }
 
-    public static SignUpData registerNewUser(WebDriver driver) {
+    public static SignUpData registerNewUserAndLogout(WebDriver driver) {
         // Create instances of page objects
         HomePage homePage = new HomePage(driver);
         LoginPage loginPage = new LoginPage(driver);
@@ -117,6 +117,36 @@ public class TestDataGenerator {
 
         // Back to home page
         homePage.backToHomePage();
+
+        // Return the registered user data
+        return signUpData;
+    }
+
+    public static SignUpData registerNewUserAndNoLogout(WebDriver driver) {
+        // Create instances of page objects
+        HomePage homePage = new HomePage(driver);
+        LoginPage loginPage = new LoginPage(driver);
+        SignUpPage signUpPage = new SignUpPage(driver);
+        AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
+
+        // Generate new user test data
+        SignUpData signUpData = generateSignUpTestData();
+        saveTestData(signUpData);  // Save test data for later use
+
+        // Open home page and navigate to login page
+        homePage.openSignInAndLoginPage();
+
+        // Sign up with generated test data
+        loginPage.SignUpUser(signUpData.getUsername(), signUpData.getEmail());
+
+        // Fill in account information
+        signUpPage.EnterAccountInformation(signUpData);
+
+        // Fill in address information
+        signUpPage.EnterAddressInformation(signUpData);
+
+        // Click 'Continue' button after account creation
+        accountCreatedPage.clickContinue();
 
         // Return the registered user data
         return signUpData;
