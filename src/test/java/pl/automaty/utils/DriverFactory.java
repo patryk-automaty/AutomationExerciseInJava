@@ -23,6 +23,6 @@ public class DriverFactory {
             options.addArguments("--user-data-dir=/tmp/chrome-" + System.currentTimeMillis());
         }
         options.addArguments("--remote-allow-origins=*");
-        return new ChromeDriver();
+        return new ChromeDriver(options);
     }
 }
