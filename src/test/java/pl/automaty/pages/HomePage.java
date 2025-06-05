@@ -17,7 +17,7 @@ public class HomePage {
     @FindBy(xpath = "//li/a[text()=' Signup / Login']")
     private WebElement signUpAndLoginLink;
 
-    @FindBy(xpath = "//button/p[text()='Consent']")
+    @FindBy(xpath = "//button[contains(@class, 'fc-cta-consent')]")
     private WebElement cookiesConsentButton;
 
     @FindBy(xpath = "//a[text()=' Logged in as ']")
