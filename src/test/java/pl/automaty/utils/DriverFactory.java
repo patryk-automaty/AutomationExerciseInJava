@@ -12,17 +12,6 @@ public class DriverFactory {
         WebDriverManager.chromedriver().setup();
 
         ChromeOptions options = new ChromeOptions();
-
-        String ci = System.getenv("CI");
-
-        if ("true".equalsIgnoreCase(ci)) {
-            options.addArguments("--headless=new");
-            options.addArguments("--no-sandbox");
-            options.addArguments("--disable-dev-shm-usage");
-            options.addArguments("--disable-gpu");
-            options.addArguments("--user-data-dir=/tmp/chrome-" + System.currentTimeMillis());
-        }
-        options.addArguments("--remote-allow-origins=*");
         return new ChromeDriver(options);
     }
 }
