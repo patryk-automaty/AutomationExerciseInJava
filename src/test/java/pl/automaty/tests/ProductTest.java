@@ -140,7 +140,7 @@ public class ProductTest extends BaseTest {
             test.log(Status.PASS, "Click on 'Women' category and choose Dress", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the category section is visible
-            Assert.assertEquals(homePage.getCategoryHeader(), "Women - Dress Products".toUpperCase());
+            Assert.assertEquals(homePage.getCategoryHeader(), "WOMEN - DRESS PRODUCTS");
 
             //  On left sidebar, click on any sub-category link of 'Men' category
             homePage.chooseMenCategory();
