@@ -42,3 +42,4 @@ build/
 /.idea/vcs.xml
 /src/test/java/pl/automaty/exercise/
 /src/test/resources/
+/src/test/java/pl/automaty/model/testData.json
