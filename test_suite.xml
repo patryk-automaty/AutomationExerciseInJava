@@ -1,0 +1,27 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<suite name="AutomationTestSuite" verbose="1" parallel="false">
+    <test name="LoginAndRegisterTests">
+        <classes>
+            <class name="pl.automaty.tests.LoginTest"/>
+            <class name="pl.automaty.tests.RegisterTest"/>
+        </classes>
+    </test>
+    <test name="ShoppingTests">
+        <classes>
+            <class name="pl.automaty.tests.CartTest"/>
+            <class name="pl.automaty.tests.ProductTest"/>
+            <class name="pl.automaty.tests.PlaceOrderTest"/>
+        </classes>
+    </test>
+    <test name="CommunicationTests">
+        <classes>
+            <class name="pl.automaty.tests.ContactUsTest"/>
+            <class name="pl.automaty.tests.SubscriptionTest"/>
+        </classes>
+    </test>
+    <test name="OtherTests">
+        <classes>
+            <class name="pl.automaty.tests.TestCaseTest"/>
+        </classes>
+    </test>
+</suite>

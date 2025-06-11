@@ -16,7 +16,7 @@ public class SubscriptionTest extends BaseTest {
         // Define expected values
         final String subscriptionEmail = "testEmail@email.com";
         final String expectedSubscriptionHeader = "SUBSCRIPTION";
-        final String expectedSuccessMessage = "You have been successfully subscribed!123";
+        final String expectedSuccessMessage = "You have been successfully subscribed!";
         // Create instances for reporting and pages
         HomePage homePage = new HomePage(driver);
         ExtentTest test = extentReports.createTest("Verify Subscription in Home page");
