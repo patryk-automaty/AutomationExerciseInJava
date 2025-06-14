@@ -36,6 +36,7 @@ public class BaseTest {
         driver = DriverFactory.getDriver();
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://www.automationexercise.com/");
+        removeAdIframe();
     }
 
     @AfterMethod
