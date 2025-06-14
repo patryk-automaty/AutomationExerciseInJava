@@ -2,6 +2,7 @@ package pl.automaty.tests;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
+import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -40,5 +41,12 @@ public class BaseTest {
     @AfterMethod
     public void tearDown() {
         driver.quit();
+    }
+
+    protected void removeAdIframe() {
+        ((JavascriptExecutor) driver).executeScript(
+                "var iframe =document.querySelector('iframe[id^=\"aswift_\"]');" +
+                        "if (iframe) iframe.remove();"
+        );
     }
 }
