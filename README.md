@@ -42,11 +42,7 @@ Execute the tests using Maven:
    ```bash
    mvn test
 ```
-To run the automated tests defined in the `test_suite.xml` suite file, use the following Maven command:
 
-```bash
-mvn test -DsuiteXmlFile=test_suite.xml
-```
 ## Reporting
 
 Test results and reports are generated using TestNG's default reporting mechanism. You can find the reports in the index.html file.
