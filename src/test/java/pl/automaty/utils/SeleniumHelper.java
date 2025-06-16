@@ -3,13 +3,14 @@ package pl.automaty.utils;
 import com.aventstack.extentreports.MediaEntityBuilder;
 import com.aventstack.extentreports.MediaEntityModelProvider;
 import org.apache.commons.io.FileUtils;
-import org.openqa.selenium.OutputType;
-import org.openqa.selenium.TakesScreenshot;
-import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.*;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.time.Duration;
 import java.util.Date;
 
 public class SeleniumHelper {
@@ -51,4 +52,35 @@ public class SeleniumHelper {
         }
         return null;
     }
+
+    public static void removeAdIframe(WebDriver driver) {
+        try {
+            JavascriptExecutor js = (JavascriptExecutor) driver;
+
+            js.executeScript(
+                    "document.querySelectorAll('ins.adsbygoogle').forEach(e => e.remove());"
+            );
+        } catch (Exception ignored) {
+        }
+    }
+
+    public static void waitForAndRemoveAds(WebDriver driver) {
+        try {
+            new WebDriverWait(driver, Duration.ofSeconds(5)).until(d -> {
+                removeAdIframe(driver);
+                return true;
+            });
+        } catch (Exception ignored) {
+        }
+    }
+    private static final ThreadLocal<WebDriver> DRIVER = new ThreadLocal<>();
+
+    public static void setDriver(WebDriver driver) {
+        DRIVER.set(driver);
+    }
+
+    public static WebDriver getDriver() {
+        return DRIVER.get();
+    }
+
 }

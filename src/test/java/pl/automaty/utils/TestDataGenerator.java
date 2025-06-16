@@ -92,17 +92,17 @@ public class TestDataGenerator {
         SignUpPage signUpPage = new SignUpPage(driver);
         AccountCreatedPage accountCreatedPage = new AccountCreatedPage(driver);
 
+
         // Generate new user test data
         SignUpData signUpData = generateSignUpTestData();
         saveTestData(signUpData);  // Save test data for later use
 
         // Open home page and navigate to login page
-        homePage.consentCookies()
-                .openSignInAndLoginPage();
+        homePage.consentCookies();
+        homePage.openSignInAndLoginPage();
 
         // Sign up with generated test data
         loginPage.SignUpUser(signUpData.getUsername(), signUpData.getEmail());
-
         // Fill in account information
         signUpPage.EnterAccountInformation(signUpData);
 

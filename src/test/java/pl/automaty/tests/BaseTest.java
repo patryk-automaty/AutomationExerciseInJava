@@ -2,7 +2,6 @@ package pl.automaty.tests;
 
 import com.aventstack.extentreports.ExtentReports;
 import com.aventstack.extentreports.reporter.ExtentHtmlReporter;
-import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -33,10 +32,9 @@ public class BaseTest {
     // Initialize the driver
     @BeforeMethod
     public void setup() {
-        driver = DriverFactory.getDriver();
+        driver = DriverFactory.getDriver("chrome");
         driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
         driver.get("https://www.automationexercise.com/");
-        removeAdIframe();
     }
 
     @AfterMethod
@@ -44,10 +42,4 @@ public class BaseTest {
         driver.quit();
     }
 
-    protected void removeAdIframe() {
-        ((JavascriptExecutor) driver).executeScript(
-                "var iframe =document.querySelector('iframe[id^=\"aswift_\"]');" +
-                        "if (iframe) iframe.remove();"
-        );
-    }
 }

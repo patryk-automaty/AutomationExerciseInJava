@@ -14,8 +14,7 @@ public class ContactUsTest extends BaseTest {
         HomePage homePage = new HomePage(driver);
         ContactUsPage contactUsPage = new ContactUsPage(driver);
         ContactUsData contactUsData = new ContactUsData();
-        String path = "/home/patryk/IdeaProjects/AutomationExerciseInJava/src/test/java/pl/automaty/model/sample.txt";
-        // open contact us form page
+        String path = System.getProperty("user.dir") + "/src/test/java/pl/automaty/model/sample.txt";        // open contact us form page
         homePage.consentCookies()
                 .contactUs();
         // Verify 'GET IN TOUCH' is visible
