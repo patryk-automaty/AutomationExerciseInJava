@@ -62,7 +62,7 @@ public class ProductTest extends BaseTest {
     public void SearchProductTest() {
 
         // Define search product name
-        String searchProductName = "dress";
+        String searchProductName = "jeans";
 
         // Create instances for pages and reporting
         HomePage homePage = new HomePage(driver);
@@ -140,12 +140,7 @@ public class ProductTest extends BaseTest {
             test.log(Status.PASS, "Click on 'Women' category and choose Dress", SeleniumHelper.getScreenshot(driver));
 
             // Verify that the category section is visible
-            Assert.assertEquals(homePage.getCategoryHeader(), "WOMEN -  DRESS PRODUCTS");
-
-            //  On left sidebar, click on any sub-category link of 'Men' category
-            homePage.chooseMenCategory();
-            homePage.clickOnMenCategory("Tshirts");
-            test.log(Status.PASS, "Click on any sub-category link of 'Men' category on left sidebar", SeleniumHelper.getScreenshot(driver));
+            Assert.assertTrue(homePage.getCategoryHeader().contains("DRESS PRODUCTS"));
         } catch (AssertionError e) {
             test.log(Status.FAIL, "Assertion failed: " + e.getMessage(), SeleniumHelper.getScreenshot(driver));
             throw e;

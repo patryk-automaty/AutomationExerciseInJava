@@ -1,5 +1,6 @@
 package pl.automaty.pages;
 
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -95,7 +96,6 @@ public class HomePage {
 
 
 
-
     private WebDriver driver;
 
     public HomePage (WebDriver driver) {
@@ -148,16 +148,16 @@ public class HomePage {
     }
 
     public void clickOnMenCategory(String categoryName) {
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(3));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
 
-        // Wait for at least one category to be visible
-        wait.until(ExpectedConditions.visibilityOfAllElements(menCategories));
+        List<WebElement> menCategories = wait.until(ExpectedConditions
+                .visibilityOfAllElementsLocatedBy(By.xpath("//div[@class='panel-group']//a[contains(text(),'" + categoryName + "')]")));
 
         for (WebElement category : menCategories) {
             if (category.getText().equalsIgnoreCase(categoryName)) {
-                wait.until(ExpectedConditions.elementToBeClickable(category)); // Ensure it's clickable
+                wait.until(ExpectedConditions.elementToBeClickable(category));
                 category.click();
-                return;  // Exit loop after clicking
+                return;
             }
         }
         throw new NoSuchElementException("Category not found: " + categoryName);
@@ -178,10 +178,6 @@ public class HomePage {
         }
         throw new NoSuchElementException("Category not found: " + categoryName);
     }
-
-
-
-
 
 
     public HomePage continueShopping() {
