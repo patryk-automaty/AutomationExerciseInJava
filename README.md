@@ -13,7 +13,7 @@ The project follows a standard Maven structure:
 
 To run this project, ensure you have the following installed:
 
-- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) (version 11 or higher)
+- [Java Development Kit (JDK)](https://www.oracle.com/java/technologies/javase-jdk11-downloads.html) (version 21 or higher)
 - [Apache Maven](https://maven.apache.org/install.html)
 - [Google Chrome Browser](https://www.google.com/chrome/) (for ChromeDriver)
 - [ChromeDriver](https://sites.google.com/a/chromium.org/chromedriver/downloads) (ensure the version matches your Chrome browser)
